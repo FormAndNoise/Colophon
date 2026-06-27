@@ -9,7 +9,7 @@ class InterleaveImageLists:
         }}
     
     RETURN_TYPES = ("IMAGE",)
-    OUTPUT_IS_LIST = (True,)
+    OUTPUT_IS_LIST = (False,)
     INPUT_IS_LIST = True
     FUNCTION = "interleave"
     CATEGORY = "MiniBook"
@@ -20,7 +20,8 @@ class InterleaveImageLists:
         for i in range(min_len):
             result.append(images1[i])
             result.append(images2[i])
-        return (result,)
+        # Stack all tensors into a single batch tensor (N, H, W, C)
+        return (torch.cat(result, dim=0),)
 
 NODE_CLASS_MAPPINGS = {
     "InterleaveImageLists": InterleaveImageLists

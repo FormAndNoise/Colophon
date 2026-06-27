@@ -42,5 +42,16 @@ This node suite acts as the orchestration layer but requires several other excel
    - The workflow runs KSampler iteratively to generate illustrations.
    - The text is overlaid, and everything is saved to `output/minibook_output.pdf`.
 
+## Dynamic Context Formatting (V2)
+
+The newly introduced `MiniBookFormatterV2` node drastically expands the suite's capabilities by introducing context-aware text parsing and dynamic illustration placement:
+
+- **Format Options**:
+  - `storybook`: Automatically splits text into pages based on word count and logical paragraph breaks.
+  - `poetry`: Preserves stanza structure and line breaks automatically without jumbling text.
+  - `chaptered_story`: Detects chapter headers (e.g., "Chapter 1:") and handles clean page breaks at chapter boundaries automatically.
+- **Dynamic Illustration Placement**: Set the `illustration_frequency` to dictate exactly when KSampler generates an image (e.g., one image every 5 pages, or one at the end of each chapter) rather than strictly 1:1.
+- **Minimum Word-Count Guarantee**: Automatically merges small orphan pages together dynamically to prevent pages with only a single stray word.
+
 ---
 

@@ -85,7 +85,7 @@ class PromptConstructorV2:
         return (prompt,)
 
 from .interleave import InterleaveImageLists
-from .dual_llm_nodes import MiniBookFormatter, MiniBookArtDirectorPrompt, MiniBookPromptParser
+from .dual_llm_nodes import MiniBookFormatter, MiniBookFormatterV2, MiniBookArtDirectorPrompt, MiniBookPromptParser
 
 NODE_CLASS_MAPPINGS = {
     "MiniBookTextParser": MiniBookTextParser,
@@ -94,6 +94,7 @@ NODE_CLASS_MAPPINGS = {
     "MasterBookControl": MasterBookControl,
     "InterleaveImageLists": InterleaveImageLists,
     "MiniBookFormatter": MiniBookFormatter,
+    "MiniBookFormatterV2": MiniBookFormatterV2,
     "MiniBookArtDirectorPrompt": MiniBookArtDirectorPrompt,
     "MiniBookPromptParser": MiniBookPromptParser
 }
