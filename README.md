@@ -1,57 +1,72 @@
-# ComfyUI-MiniBook_Node
+# MiniBook Studio: An LLM-Driven Publishing Suite for ComfyUI
 
-ComfyUI-MiniBook is a custom node extension and workflow designed to automate the creation of illustrated storybooks. It utilizes a dual-LLM pipeline to generate a narrative, split it into pages, act as an Art Director to design scene prompts, generate images via SDXL + IPAdapter, and package the final result into a PDF.
+![MiniBook Studio Workflow](assets/screen.png)
 
-## Installation
+MiniBook Studio is a modular suite of ComfyUI custom nodes designed to automate the roles of a Literary Editor, Art Director, and Layout Designer. Rather than blindly chunking text or generating disconnected images, this pipeline uses LLM orchestration to build cohesive, formatted, and visually consistent storybooks and graphic novels.
 
-1. Navigate to your ComfyUI `custom_nodes` directory:
+## 📖 The Concept: Human-in-the-Loop Orchestration
+Built for the demands of modern creative studios, MiniBook operates on the philosophy of the **Human-in-the-Loop Director**. This is not an automated content mill. It is a highly controlled pipeline that empowers a human creator to curate, audit, and refine the AI's output. 
+
+By separating the logic into distinct editorial and layout steps, you retain absolute creative control over dramatic pacing, visual consistency, and typographic elegance. The outputs are generated sequentially, perfectly nested, and ready for digital publishing or physical print imposition.
+
+## 🚀 Key Features
+* **Intelligent Pagination:** The `Literary Editor` node paginates raw text based on dramatic beats, chapter breaks, and visual rhythm, rather than arbitrary word counts.
+* **Latent Space Locking:** The `Editorial Art Director` node programmatically binds global art styles and character embeddings to local scene prompts, ensuring absolute visual consistency across the entire book.
+* **Dynamic Layout Engine:** The `Layout Compositor` handles real typography, drop caps, margins, and text-to-image integration, rendering complete pages rather than raw assets.
+* **API-Agnostic Routing:** Seamlessly route LLM calls to cloud providers (OpenRouter, CLōD) for rapid prototyping, or to local endpoints for completely sovereign, air-gapped generation.
+
+## 💻 Hardware & Compute Tiers
+This suite is designed to be accessible for prototyping while scaling gracefully for enterprise production.
+
+* **Prototyping & Development:** Validated and heavily tested on a standard NVIDIA RTX 3060 (12GB VRAM) paired with an Intel i5 / 24GB RAM secondary machine. By leveraging OpenRouter/CLōD for the heavy editorial logic, the entire layout and diffusion pipeline runs smoothly on mid-tier hardware.
+* **Production & Sovereign Studios:** For studios requiring strict data privacy and IP protection, the API bridge can be pointed to a local network appliance running high-weight models on multi-GPU setups.
+
+## 🧩 Core Node Breakdown
+* **Literary Editor:** An LLM-powered editorial brain that reads a manuscript and outputs a strict JSON pagination plan.
+* **Editorial Art Director:** Intercepts the editorial plan, extracting illustration notes and merging them with global stylistic anchors.
+* **Layout Compositor:** Turns text arrays and image batches into properly formatted book pages with real typography.
+* **Front Matter Generator:** Adds professional polish—title pages, copyright colophons, dedications, and back-cover blurbs.
+* **Master Book Control:** The central hub for defining global themes, formats, art styles, and character descriptions.
+
+### 🧰 Core Controls & Utility Nodes
+Included in this suite are several robust utility nodes for advanced workflow control:
+* **Image Text Overlay:** Add highly customizable, format-aware text overlays directly to image tensors.
+* **Prompt Selection & Scheduling:** Manage and format string prompts based on configurable parameters, input indices, and pre/post-text application.
+* **Loop Constructs (`Loop`, `LoopStart`, `LoopEnd`):** Implement dynamic looping mechanisms that reset based on runtime conditions.
+* **EndQueue:** Conditional logic to terminate the current generation queue.
+
+## 🛠️ Installation & Requirements
+
+### System Requirements
+* Python 3.6+
+* `Pillow` (PIL) for image processing
+* `torch` for tensor operations
+* `numpy`
+
+### Installation
+1. Navigate to your ComfyUI `custom_nodes` directory.
+2. Clone this repository:
    ```bash
-   cd ComfyUI/custom_nodes
+   git clone [https://github.com/yourusername/minibook-studio.git](https://github.com/yourusername/minibook-studio.git)
    ```
-
-2. Clone this repository or extract the packaged zip file here:
+3. Install the required dependencies:
    ```bash
-   git clone https://github.com/your-username/ComfyUI-MiniBook_Node.git
+   pip install -r requirements.txt
    ```
-   *(If you downloaded the `.zip`, simply extract the `ComfyUI-MiniBook_Node` folder into `custom_nodes/`)*
+4. Restart ComfyUI.
 
-3. Restart ComfyUI.
+### Required Community Nodes
+To run the included example workflows out-of-the-box, it is highly recommended to use the **ComfyUI Manager** to install the following dependencies:
+* `comfyui-llm-toolkit` (For API Provider configuration)
+* `ComfyUI_IPAdapter_plus` (For character FaceID and latent consistency)
 
-## Dependencies
+## 📥 Quick Start
+Drop the provided `minibook_editorial_OptionA.json` from the `workflows/` directory into your ComfyUI workspace. Configure your API key in the LLM Provider node, input a short story into the Theme Input, and queue the prompt. 
 
-This node suite acts as the orchestration layer but requires several other excellent community custom nodes to run the included `minibook_workflow.json`:
+*Sample spreads and final PDF outputs can be viewed in the `assets/` folder.*
 
-- **[ComfyUI-LLM-Toolkit](https://github.com/M1kep/ComfyUI-LLM-Toolkit)**: Required for LLM text generation (`LLMToolkitTextGenerator`, `APIProviderSelectorNode`).
-  *Note: Be sure to set up your `.env` file with `OPENROUTER_API_KEY` (or other provider) as per the toolkit's instructions and increase the `max_tokens` default if you expect stories larger than 1024 tokens.*
-- **[ComfyUI_IPAdapter_plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus)**: Required for character consistency (`IPAdapterUnifiedLoaderFaceID`, `IPAdapterFaceID`).
-- **[ComfyUI-Documents](https://github.com/M1kep/ComfyUI-Documents)**: Required for the final PDF compilation (`FL_ImagesToPDF`, `FL_PDFSaver`).
-- **[ComfyUI-Book-Tools] / Text Overlay nodes**: Required for placing text onto images (`BTImageTextOverlay`).
+## 🤝 Contributions
+Contributions are welcome. Please fork the repository and submit a pull request with your suggested changes.
 
-*No additional `pip` dependencies are required beyond what standard ComfyUI and the above extensions use.*
-
-## Usage
-
-1. Load the `workflows/minibook_workflow.json` in ComfyUI.
-2. Provide your overarching story theme, constraints, and character description in the `MasterBookControl` (or connected `TextInput` nodes).
-3. Ensure your API Provider (e.g. OpenRouter) is configured in your `.env`.
-4. Run the workflow. It will:
-   - Generate the story.
-   - Format the story into chunks/pages.
-   - Generate prompt instructions for the Art Director.
-   - The Art Director LLM creates a specific image prompt for each page.
-   - The workflow runs KSampler iteratively to generate illustrations.
-   - The text is overlaid, and everything is saved to `output/minibook_output.pdf`.
-
-## Dynamic Context Formatting (V2)
-
-The newly introduced `MiniBookFormatterV2` node drastically expands the suite's capabilities by introducing context-aware text parsing and dynamic illustration placement:
-
-- **Format Options**:
-  - `storybook`: Automatically splits text into pages based on word count and logical paragraph breaks.
-  - `poetry`: Preserves stanza structure and line breaks automatically without jumbling text.
-  - `chaptered_story`: Detects chapter headers (e.g., "Chapter 1:") and handles clean page breaks at chapter boundaries automatically.
-- **Dynamic Illustration Placement**: Set the `illustration_frequency` to dictate exactly when KSampler generates an image (e.g., one image every 5 pages, or one at the end of each chapter) rather than strictly 1:1.
-- **Minimum Word-Count Guarantee**: Automatically merges small orphan pages together dynamically to prevent pages with only a single stray word.
-
----
-
+## 📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.

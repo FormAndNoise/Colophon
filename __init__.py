@@ -1,100 +1,103 @@
-import re
+# __init__.py
 
-class MiniBookTextParser:
-    @classmethod
-    def INPUT_TYPES(s):
-        return {"required": {"text": ("STRING", {"forceInput": True})}}
-    
-    RETURN_TYPES = ("STRING", "STRING")
-    RETURN_NAMES = ("page_texts", "scene_prompts")
-    OUTPUT_IS_LIST = (True, True)
-    FUNCTION = "parse"
-    CATEGORY = "MiniBook"
-    
-    def parse(self, text):
-        import os
-        try:
-            import folder_paths
-            output_dir = folder_paths.get_output_directory()
-        except Exception:
-            output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "output")
-        os.makedirs(output_dir, exist_ok=True)
-        raw_output_path = os.path.join(output_dir, 'raw_llm_output.txt')
-        with open(raw_output_path, 'w', encoding='utf-8') as f:
-            f.write(text)
-        pages = [p.strip() for p in re.findall(r'\[PAGE[_\s]*\d+\]:?(.*?)(?=\[|$)', text, re.DOTALL|re.IGNORECASE)]
-        scenes = [s.strip() for s in re.findall(r'\[SCENE[_\s]*\d+\]:?(.*?)(?=\[|$)', text, re.DOTALL|re.IGNORECASE)]
-        min_len = min(len(pages), len(scenes))
-        if min_len == 0:
-             return (["Error parsing text"], ["Error parsing scenes"])
-        return (pages[:min_len], scenes[:min_len])
+# Import classes from the modular files inside the nodes/ directory
+from .nodes.dual_llm_nodes import MiniBookFormatter, MiniBookFormatterV2, MiniBookArtDirectorPrompt, MiniBookPromptParser
+from .nodes.editorial_art_director import MiniBookEditorialArtDirector, MiniBookAssembler
+from .nodes.front_matter import MiniBookFrontMatter
+from .nodes.interleave import InterleaveImageLists
+from .nodes.layout_compositor import MiniBookLayoutCompositor
+from .nodes.literary_editor import MiniBookLiteraryEditor
+from .nodes.text_to_image import BookToolsTextToImage
 
-class PromptConstructor:
-    @classmethod
-    def INPUT_TYPES(s):
-        return {"required": {
-            "theme": ("STRING", {"forceInput": True}), 
-            "format": ("STRING", {"forceInput": True})
-        }}
-    
-    RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("prompt",)
-    FUNCTION = "construct"
-    CATEGORY = "MiniBook"
-    
-    def construct(self, theme, format):
-        return (f"Write a {format} with the theme '{theme}'. Include 8 pages, each with text and an illustration.\nUse this format:\n[TITLE]: Title of the book\n[CHARACTER]: Visual description of characters\n[PAGE_N]: Text content for the page\n[SCENE_N]: Scene prompt for the page illustration",)
+# Import the recovered control and utility nodes
+from .nodes.core_controls import (
+    MiniBookTextParser,
+    PromptConstructor,
+    PromptConstructorV2,
+    MasterBookControl,
+    TextInput,
+    BookToolsPromptSelector,
+    BookToolsPromptSchedule,
+    BookToolsLoop,
+    BookToolsLoopStart,
+    BookToolsLoopEnd,
+    BookToolsEndQueue,
+    BookToolsDownloadFont,
+    BookToolsImageTextOverlay,
+    BookToolsCalculateTextGrowth,
+    BookToolsRandomTextOverlay,
+)
 
-class MasterBookControl:
-    @classmethod
-    def INPUT_TYPES(s):
-        return {"required": {
-            "format": ("STRING", {"default": "children's book"}),
-            "theme": ("STRING", {"default": "arguing gets you nowhere", "multiline": True}),
-            "constraints": ("STRING", {"default": "Keep it entertaining for adults.", "multiline": True}),
-            "art_style": ("STRING", {"default": "Line art illustration with gentle, broad sweeping ink washes"}),
-            "character_description": ("STRING", {"default": "Visual description of characters", "multiline": True}),
-        }}
-    
-    RETURN_TYPES = ("STRING", "STRING", "STRING")
-    RETURN_NAMES = ("story_prompt", "art_style", "character_description")
-    FUNCTION = "construct"
-    CATEGORY = "MiniBook"
-    
-    def construct(self, format, theme, constraints, art_style, character_description):
-        prompt = f"Write a full, continuous {format} with the theme '{theme}'.\nAdditional constraints: {constraints}.\n\nWrite pure story text, do NOT include page numbers, bracketed tags, or scene descriptions. Just write the story from start to finish."
-        return (prompt, art_style, character_description)
-
-class PromptConstructorV2:
-    @classmethod
-    def INPUT_TYPES(s):
-        return {"required": {
-            "theme": ("STRING", {"forceInput": True}), 
-            "format": ("STRING", {"forceInput": True}),
-            "art_style": ("STRING", {"forceInput": True}),
-            "constraints": ("STRING", {"forceInput": True})
-        }}
-    
-    RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("prompt",)
-    FUNCTION = "construct"
-    CATEGORY = "MiniBook"
-    
-    def construct(self, theme, format, art_style, constraints):
-        prompt = f"Write a {format} with the theme '{theme}'. Include 8 pages, each with text and an illustration.\nThe art style for the illustrations is: {art_style}.\nAdditional constraints: {constraints}.\n\nUse this exact format for your response:\n[TITLE]: Title of the book\n[CHARACTER]: Visual description of characters\n[PAGE_N]: Text content for the page\n[SCENE_N]: Scene prompt for the page illustration (make sure the scene prompt includes the art style: {art_style})"
-        return (prompt,)
-
-from .interleave import InterleaveImageLists
-from .dual_llm_nodes import MiniBookFormatter, MiniBookFormatterV2, MiniBookArtDirectorPrompt, MiniBookPromptParser
-
+# Map the internal class names to the identifiers ComfyUI uses under the hood.
+# NOTE: BookTools* and TextInput keep their original BT*/MiniBookTextInput IDs
+# so pre-existing workflow JSON files continue to load without edits.
 NODE_CLASS_MAPPINGS = {
+    "MiniBookFormatter": MiniBookFormatter,
+    "MiniBookFormatterV2": MiniBookFormatterV2,
+    "MiniBookArtDirectorPrompt": MiniBookArtDirectorPrompt,
+    "MiniBookPromptParser": MiniBookPromptParser,
+    "MiniBookEditorialArtDirector": MiniBookEditorialArtDirector,
+    "MiniBookAssembler": MiniBookAssembler,
+    "MiniBookFrontMatter": MiniBookFrontMatter,
+    "InterleaveImageLists": InterleaveImageLists,
+    "MiniBookLayoutCompositor": MiniBookLayoutCompositor,
+    "MiniBookLiteraryEditor": MiniBookLiteraryEditor,
+    "BookToolsTextToImage": BookToolsTextToImage,
+
+    # Core Controls
     "MiniBookTextParser": MiniBookTextParser,
     "PromptConstructor": PromptConstructor,
     "PromptConstructorV2": PromptConstructorV2,
     "MasterBookControl": MasterBookControl,
-    "InterleaveImageLists": InterleaveImageLists,
-    "MiniBookFormatter": MiniBookFormatter,
-    "MiniBookFormatterV2": MiniBookFormatterV2,
-    "MiniBookArtDirectorPrompt": MiniBookArtDirectorPrompt,
-    "MiniBookPromptParser": MiniBookPromptParser
+    "MiniBookTextInput": TextInput,
+
+    # BookTools suite (original registration IDs)
+    "BTPromptSelector": BookToolsPromptSelector,
+    "BTPromptSchedule": BookToolsPromptSchedule,
+    "BTLoop": BookToolsLoop,
+    "BTLoopStart": BookToolsLoopStart,
+    "BTLoopEnd": BookToolsLoopEnd,
+    "BTEndQueue": BookToolsEndQueue,
+    "BTImageTextOverlay": BookToolsImageTextOverlay,
+    "BTDownloadFont": BookToolsDownloadFont,
+    "BTTextGrowth": BookToolsCalculateTextGrowth,
+    "BTRandomTextOverlay": BookToolsRandomTextOverlay,
+    "BTTextToImage": BookToolsTextToImage,
 }
+
+# Map the internal identifiers to the clean, human-readable names shown in the UI
+NODE_DISPLAY_NAME_MAPPINGS = {
+    "MiniBookFormatter": "MiniBook Formatter (Legacy)",
+    "MiniBookFormatterV2": "MiniBook Formatter V2",
+    "MiniBookArtDirectorPrompt": "MiniBook Art Director Prompt",
+    "MiniBookPromptParser": "MiniBook Prompt Parser",
+    "MiniBookEditorialArtDirector": "Editorial Art Director",
+    "MiniBookAssembler": "Book Assembler",
+    "MiniBookFrontMatter": "Front Matter Generator",
+    "InterleaveImageLists": "Interleave Image Lists",
+    "MiniBookLayoutCompositor": "Layout Compositor",
+    "MiniBookLiteraryEditor": "Literary Editor",
+    "BookToolsTextToImage": "Text to Image (Book Tools)",
+
+    # Core Controls
+    "MiniBookTextParser": "Text Parser",
+    "PromptConstructor": "Prompt Constructor",
+    "PromptConstructorV2": "Prompt Constructor V2",
+    "MasterBookControl": "[MiniBook] Master Book Control",
+    "MiniBookTextInput": "[MiniBook] Text Input",
+
+    # BookTools suite
+    "BTPromptSelector": "[Book Tools] Prompt Selector",
+    "BTPromptSchedule": "[Book Tools] Prompt Batch Schedule",
+    "BTLoop": "[Book Tools] Loop",
+    "BTLoopStart": "[Book Tools] Loop Start",
+    "BTLoopEnd": "[Book Tools] Loop End",
+    "BTEndQueue": "[Book Tools] End Queue",
+    "BTImageTextOverlay": "[Book Tools] Image Text Overlay",
+    "BTDownloadFont": "[Book Tools] Download Font",
+    "BTTextGrowth": "[Book Tools] Calculate Text Growth",
+    "BTRandomTextOverlay": "[Book Tools] Random Text Overlay",
+    "BTTextToImage": "[Book Tools] Text to Image",
+}
+
+__all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
