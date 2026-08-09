@@ -499,8 +499,9 @@ class BookToolsImageTextOverlay:
             draw = ImageDraw.Draw(dummy_image)
             bbox = draw.textbbox((0, 0), text, font=font)
             return bbox[2] - bbox[0]
-        except:
-
+        except Exception:
+            # Fall back to per-character widths; keep this narrow so a real
+            # interrupt (KeyboardInterrupt/SystemExit) still propagates.
             return sum(font.getbbox(char)[2] - font.getbbox(char)[0] for char in text)
 
     def calculate_text_size(self, text, font_size, font_path, max_width, max_height, line_height_factor):
