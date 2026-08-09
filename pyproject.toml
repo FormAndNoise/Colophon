@@ -1,8 +1,16 @@
 [project]
 name = "comfyui-book-tools"
-description = "ComfyUI-Book-Tools is a set o new nodes for ComfyUI that allows users to easily add text overlays to images within their ComfyUI projects. This Node leverages Python Imaging Library (PIL) and PyTorch to dynamically render text on images, supporting a wide range of customization options including font size, alignment, color, and padding. Loop with any parameters (*), prompt batch schedule with prompt selector, end queue for automatic ending current queue."
+description = "MiniBook Studio — a ComfyUI custom-node suite for AI-assisted book creation. Includes LLM-driven editorial planning, layout composition, front-matter generation, text-to-image rendering, and legacy BookTools text-overlay nodes."
 version = "1.2"
 license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = [
+    "torch",
+    "Pillow",
+    "numpy",
+    "requests",
+    "fontTools",
+]
 
 [project.urls]
 Repository = "https://github.com/Big-Idea-Technology/ComfyUI-Book-Tools"
@@ -12,3 +20,13 @@ Repository = "https://github.com/Big-Idea-Technology/ComfyUI-Book-Tools"
 PublisherId = "nazgut"
 DisplayName = "ComfyUI-Book-Tools"
 Icon = ""
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+# Load the folder_paths stub before collection triggers package imports
+addopts = "-p tests.conftest"
+
+[tool.flake8]
+max-line-length = 120
+exclude = ["__pycache__", ".worktrees"]
