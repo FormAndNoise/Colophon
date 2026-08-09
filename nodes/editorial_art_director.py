@@ -104,6 +104,21 @@ class MiniBookAssembler:
     FUNCTION = "assemble"
     CATEGORY = "MiniBook"
 
+    @staticmethod
+    def _fit_to_body(front_or_back_pages, body_pages):
+        """Resize a page batch to the body page's HxW if they differ.
+
+        Batches are NHWC; interpolate needs NCHW, so permute both ways.
+        """
+        import torch.nn.functional as F
+
+        if front_or_back_pages.shape[1:3] == body_pages.shape[1:3]:
+            return front_or_back_pages
+        h, w = body_pages.shape[1], body_pages.shape[2]
+        pages = front_or_back_pages.permute(0, 3, 1, 2)  # NHWC -> NCHW
+        pages = F.interpolate(pages, size=(h, w), mode='bilinear', align_corners=False)
+        return pages.permute(0, 2, 3, 1)  # NCHW -> NHWC
+
     def assemble(self, body_pages, front_pages=None, back_pages=None):
         """Concatenate all page batches in book order."""
         import torch
@@ -111,25 +126,12 @@ class MiniBookAssembler:
         parts = []
 
         if front_pages is not None:
-            # Resize front pages to match body page dimensions if needed
-            if front_pages.shape[1:3] != body_pages.shape[1:3]:
-                import torch.nn.functional as F
-                h, w = body_pages.shape[1], body_pages.shape[2]
-                front_pages = front_pages.permute(0, 3, 1, 2)  # NHWC -> NCHW
-                front_pages = F.interpolate(front_pages, size=(h, w), mode='bilinear', align_corners=False)
-                front_pages = front_pages.permute(0, 2, 3, 1)  # NCHW -> NHWC
-            parts.append(front_pages)
+            parts.append(self._fit_to_body(front_pages, body_pages))
 
         parts.append(body_pages)
 
         if back_pages is not None:
-            if back_pages.shape[1:3] != body_pages.shape[1:3]:
-                import torch.nn.functional as F
-                h, w = body_pages.shape[1], body_pages.shape[2]
-                back_pages = back_pages.permute(0, 3, 1, 2)
-                back_pages = F.interpolate(back_pages, size=(h, w), mode='bilinear', align_corners=False)
-                back_pages = back_pages.permute(0, 2, 3, 1)
-            parts.append(back_pages)
+            parts.append(self._fit_to_body(back_pages, body_pages))
 
         complete = torch.cat(parts, dim=0)
         return (complete,)
