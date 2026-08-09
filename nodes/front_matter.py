@@ -6,12 +6,19 @@ copyright, dedication, table of contents, author bio, and back cover blurb.
 Uses an LLM for contextually appropriate creative content.
 """
 
+import os
+
 from PIL import Image, ImageDraw, ImageFont
 import torch
 import numpy as np
 import json
-import re
 from .llm_bridge import run_llm
+
+# Bundled fonts ship with the pack; use them as a portable fallback so pages
+# render with a real TTF even when the user-configured font path is missing.
+_BUNDLED_FONT_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fonts"
+)
 
 
 class MiniBookFrontMatter:
@@ -55,13 +62,21 @@ class MiniBookFrontMatter:
     CATEGORY = "MiniBook"
 
     def _load_font(self, font_path, size):
+        """Load a font with fallback to bundled fonts, then system default."""
         try:
             return ImageFont.truetype(font_path, size)
         except Exception:
-            try:
-                return ImageFont.truetype("C:/Windows/Fonts/arial.ttf", size)
-            except Exception:
-                return ImageFont.load_default()
+            pass
+        try:
+            for name in sorted(os.listdir(_BUNDLED_FONT_DIR)):
+                if name.lower().endswith(".ttf"):
+                    return ImageFont.truetype(os.path.join(_BUNDLED_FONT_DIR, name), size)
+        except Exception:
+            pass
+        try:
+            return ImageFont.truetype("C:/Windows/Fonts/arial.ttf", size)
+        except Exception:
+            return ImageFont.load_default()
 
     def _call_llm_with_fallback(self, context, prompt, fallback_text):
         try:
@@ -246,7 +261,6 @@ class MiniBookFrontMatter:
 
         y = int(page_h * 0.22)
         line_height = int(body_size * 2.5)
-        usable_width = page_w - margin_left - margin_right
 
         for entry_text, page_num in entries:
             # Truncate long entries
