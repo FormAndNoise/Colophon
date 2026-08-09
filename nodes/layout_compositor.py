@@ -6,12 +6,28 @@ and composes properly laid-out book pages with real typography, margins,
 and intelligent text/image placement.
 """
 
+import os
+
 from PIL import Image, ImageDraw, ImageFont
 import torch
 import numpy as np
-import json
-import re
-import math
+
+# Bundled fonts ship with the pack; use them as a portable fallback so pages
+# render with a real TTF even when the user-configured font path is missing.
+_BUNDLED_FONT_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fonts"
+)
+
+
+def _bundled_font_fallback():
+    """Return the path of the first bundled .ttf, or None if unavailable."""
+    try:
+        for name in sorted(os.listdir(_BUNDLED_FONT_DIR)):
+            if name.lower().endswith(".ttf"):
+                return os.path.join(_BUNDLED_FONT_DIR, name)
+    except OSError:
+        pass
+    return None
 
 
 class MiniBookLayoutCompositor:
@@ -55,14 +71,21 @@ class MiniBookLayoutCompositor:
     CATEGORY = "MiniBook"
 
     def _load_font(self, font_path, size):
-        """Load a font with fallback to system default."""
+        """Load a font with fallback to bundled fonts, then system default."""
         try:
             return ImageFont.truetype(font_path, size)
         except Exception:
+            pass
+        bundled = _bundled_font_fallback()
+        if bundled:
             try:
-                return ImageFont.truetype("C:/Windows/Fonts/arial.ttf", size)
+                return ImageFont.truetype(bundled, size)
             except Exception:
-                return ImageFont.load_default()
+                pass
+        try:
+            return ImageFont.truetype("C:/Windows/Fonts/arial.ttf", size)
+        except Exception:
+            return ImageFont.load_default()
 
     def _wrap_text(self, text, font, max_width, draw):
         """Word-wrap text to fit within max_width pixels. Returns list of lines."""
@@ -152,7 +175,11 @@ class MiniBookLayoutCompositor:
         return remaining_text, current_y
 
     def _compose_text_only(self, text, page_w, page_h, margins, font_path, body_size, line_height_factor=1.5):
-        """Compose a text-only page with proper typography."""
+        """Compose a text-only page with proper typography.
+
+        Returns (page, dropped_lines) where dropped_lines counts lines that
+        did not fit so callers can warn about silent truncation.
+        """
         page = Image.new('RGB', (page_w, page_h), (252, 250, 245))  # Warm off-white
         draw = ImageDraw.Draw(page)
 
@@ -167,19 +194,24 @@ class MiniBookLayoutCompositor:
         lines = self._wrap_text(text, body_font, text_width, draw)
         current_y = text_y
 
+        consumed = 0
         for line in lines:
             if current_y + line_height > text_y + text_height:
                 break  # Don't overflow the page
             if line == "":
                 current_y += int(line_height * 0.6)  # Paragraph spacing
-                continue
-            draw.text((text_x, current_y), line, fill=(30, 30, 30), font=body_font)
-            current_y += line_height
+            else:
+                draw.text((text_x, current_y), line, fill=(30, 30, 30), font=body_font)
+                current_y += line_height
+            consumed += 1
 
-        return page
+        return page, len(lines) - consumed
 
     def _compose_chapter_opener(self, text, page_w, page_h, margins, font_path, body_size, title_size):
-        """Compose a chapter opener with decorative header and generous whitespace."""
+        """Compose a chapter opener with decorative header and generous whitespace.
+
+        Returns (page, dropped_lines).
+        """
         page = Image.new('RGB', (page_w, page_h), (252, 250, 245))
         draw = ImageDraw.Draw(page)
 
@@ -216,6 +248,7 @@ class MiniBookLayoutCompositor:
         # Body text starts well below the title with a drop cap
         body_y = below_y + int(title_size * 1.2)
 
+        dropped = 0
         if body_text:
             remaining, new_y = self._draw_drop_cap(
                 draw, body_text, font_path, body_font, body_size,
@@ -223,19 +256,25 @@ class MiniBookLayoutCompositor:
             )
             if remaining:
                 remaining_lines = self._wrap_text(remaining, body_font, text_width, draw)
+                consumed = 0
                 for rline in remaining_lines:
                     if new_y + line_height > page_h - margins["bottom"]:
                         break
                     if rline == "":
                         new_y += int(line_height * 0.6)
-                        continue
-                    draw.text((margins["left"], new_y), rline, fill=(30, 30, 30), font=body_font)
-                    new_y += line_height
+                    else:
+                        draw.text((margins["left"], new_y), rline, fill=(30, 30, 30), font=body_font)
+                        new_y += line_height
+                    consumed += 1
+                dropped = len(remaining_lines) - consumed
 
-        return page
+        return page, dropped
 
     def _compose_text_with_illustration(self, text, illustration, page_w, page_h, margins, font_path, body_size):
-        """Compose a page with text on one half and illustration on the other."""
+        """Compose a page with text on one half and illustration on the other.
+
+        Returns (page, dropped_lines).
+        """
         page = Image.new('RGB', (page_w, page_h), (252, 250, 245))
         draw = ImageDraw.Draw(page)
 
@@ -263,57 +302,76 @@ class MiniBookLayoutCompositor:
         # Draw text
         lines = self._wrap_text(text, body_font, text_width, draw)
         current_y = text_y
+        consumed = 0
         for line in lines:
             if current_y + line_height > page_h - margins["bottom"]:
                 break
             if line == "":
                 current_y += int(line_height * 0.6)
-                continue
-            draw.text((margins["left"], current_y), line, fill=(30, 30, 30), font=body_font)
-            current_y += line_height
+            else:
+                draw.text((margins["left"], current_y), line, fill=(30, 30, 30), font=body_font)
+                current_y += line_height
+            consumed += 1
 
-        return page
+        return page, len(lines) - consumed
 
     def _compose_full_illustration(self, text, illustration, page_w, page_h, margins, font_path, body_size):
-        """Compose a full-page illustration with optional caption."""
+        """Compose a full-page illustration with optional caption.
+
+        Returns (page, dropped_caption_lines).
+        """
         page = Image.new('RGB', (page_w, page_h), (252, 250, 245))
+        draw = ImageDraw.Draw(page)
 
-        if illustration is not None:
-            # Fill the page with the illustration (respecting margins)
-            illust_w = page_w - margins["left"] - margins["right"]
-            illust_h = page_h - margins["top"] - margins["bottom"]
+        content_h = page_h - margins["top"] - margins["bottom"]
 
-            illust_pil = illustration.resize((illust_w, illust_h), Image.LANCZOS)
-            page.paste(illust_pil, (margins["left"], margins["top"]))
-
-        # Optional caption at the bottom
+        # Size the caption first so the illustration can yield room for it.
+        caption_lines = []
+        dropped_caption_lines = 0
+        caption_font = None
+        caption_line_height = 0
+        caption_gap = 0
         if text and text.strip():
-            draw = ImageDraw.Draw(page)
-            
             # Use the book's font, scaled down slightly for the caption
             caption_size = max(16, int(body_size * 0.75))
             caption_font = self._load_font(font_path, caption_size)
-            line_height = int(caption_size * 1.5)
-            
+            caption_line_height = int(caption_size * 1.5)
+            caption_gap = int(caption_size * 0.5)
             text_width = page_w - margins["left"] - margins["right"]
-            lines = self._wrap_text(text.strip(), caption_font, text_width, draw)
-            
-            # Start drawing 20px below the illustration, inside the bottom margin
-            caption_y = page_h - margins["bottom"] + 20
-            
-            for line in lines:
-                # Prevent drawing off the bottom edge of the page
-                if caption_y + line_height > page_h - 20:
-                    break
-                    
+            caption_lines = self._wrap_text(text.strip(), caption_font, text_width, draw)
+            # Never let the caption eat the whole content area.
+            max_caption_lines = max(1, (content_h // 2) // caption_line_height)
+            if len(caption_lines) > max_caption_lines:
+                dropped_caption_lines = len(caption_lines) - max_caption_lines
+                caption_lines = caption_lines[:max_caption_lines]
+
+        caption_block_h = (
+            len(caption_lines) * caption_line_height + caption_gap
+            if caption_lines else 0
+        )
+
+        if illustration is not None:
+            # Fill the content area with the illustration, reserving room for
+            # the caption below it so the caption never spills into the margin.
+            illust_w = page_w - margins["left"] - margins["right"]
+            illust_h = max(0, content_h - caption_block_h)
+
+            if illust_h > 0:
+                illust_pil = illustration.resize((illust_w, illust_h), Image.LANCZOS)
+                page.paste(illust_pil, (margins["left"], margins["top"]))
+
+        # Caption at the bottom of the content area (never in the margin band)
+        if caption_lines:
+            caption_y = page_h - margins["bottom"] - len(caption_lines) * caption_line_height
+            for line in caption_lines:
                 line_bbox = draw.textbbox((0, 0), line, font=caption_font)
                 line_w = line_bbox[2] - line_bbox[0]
                 line_x = (page_w - line_w) // 2  # Center the caption
-                
-                draw.text((line_x, caption_y), line, fill=(100, 100, 100), font=caption_font)
-                caption_y += line_height
 
-        return page
+                draw.text((line_x, caption_y), line, fill=(100, 100, 100), font=caption_font)
+                caption_y += caption_line_height
+
+        return page, dropped_caption_lines
 
     def _compose_section_break(self, text, page_w, page_h, margins, font_path, body_size):
         """Compose a section break page — minimal, elegant."""
@@ -321,7 +379,9 @@ class MiniBookLayoutCompositor:
         draw = ImageDraw.Draw(page)
 
         # Center the text (if any) vertically on the page
-        if text and text.strip():
+        text_bottom = None
+        has_text = bool(text and text.strip())
+        if has_text:
             italic_size = int(body_size * 1.1)
             font = self._load_font(font_path, italic_size)
             text_width = page_w - margins["left"] - margins["right"]
@@ -339,8 +399,14 @@ class MiniBookLayoutCompositor:
                 draw.text((line_x, start_y), line, fill=(80, 70, 60), font=font)
                 start_y += line_height
 
-        # Draw a centered ornamental divider
-        divider_y = int(page_h * 0.48) if not text else start_y + line_height
+            text_bottom = start_y  # y just below the last drawn line
+
+        # Draw a centered ornamental divider. When there is text, place the
+        # divider just below it; otherwise center it at ~48% of the page.
+        if text_bottom is not None:
+            divider_y = text_bottom + int(body_size * 0.5)
+        else:
+            divider_y = int(page_h * 0.48)
         center_x = page_w // 2
         ornament = "— ✦ —"
         orn_font = self._load_font(font_path, int(body_size * 0.8))
@@ -350,21 +416,29 @@ class MiniBookLayoutCompositor:
 
         return page
 
+    @staticmethod
+    def _unwrap_scalar(value):
+        """INPUT_IS_LIST=True wraps every input in a list; unwrap scalars."""
+        if isinstance(value, list):
+            if not value:
+                raise ValueError(
+                    "[MiniBookLayoutCompositor] Scalar input arrived as an empty list."
+                )
+            return value[0]
+        return value
+
     def compose(self, page_texts, page_types, sheet_size, font, body_font_size,
                 title_font_size, margin_percent, illustrations=None):
         """Main execution: compose all pages according to the editorial plan."""
 
-        # Unwrap list inputs (ComfyUI sends single values wrapped in lists when INPUT_IS_LIST=True)
-        if isinstance(sheet_size, list):
-            sheet_size = sheet_size[0]
-        if isinstance(font, list):
-            font = font[0]
-        if isinstance(body_font_size, list):
-            body_font_size = body_font_size[0]
-        if isinstance(title_font_size, list):
-            title_font_size = title_font_size[0]
-        if isinstance(margin_percent, list):
-            margin_percent = margin_percent[0]
+        # INPUT_IS_LIST=True makes every input arrive as a list — including
+        # the scalar widgets. Unwrap them uniformly (and coerce types) so a
+        # new scalar widget never silently stays a one-element list.
+        sheet_size = self._unwrap_scalar(sheet_size)
+        font = self._unwrap_scalar(font)
+        body_font_size = int(self._unwrap_scalar(body_font_size))
+        title_font_size = int(self._unwrap_scalar(title_font_size))
+        margin_percent = float(self._unwrap_scalar(margin_percent))
 
         # Get page dimensions
         page_w, page_h = self.SHEET_DIMS.get(sheet_size, (1800, 2700))
@@ -379,15 +453,22 @@ class MiniBookLayoutCompositor:
             "bottom": margin_px_v,
         }
 
-        # Convert illustration tensors to PIL images if provided
+        # Convert illustration tensors to PIL images if provided.
+        # Each list element may be a single image (H, W, C) or a batch
+        # (N, H, W, C) — expand batches so every page that needs an
+        # illustration gets exactly one.
         illust_pil_list = []
         if illustrations is not None:
             for illust_tensor in illustrations:
-                if isinstance(illust_tensor, torch.Tensor):
-                    np_img = illust_tensor.cpu().numpy()
-                    if np_img.ndim == 4:
-                        np_img = np_img.squeeze(0)
-                    pil_img = Image.fromarray((np_img * 255).astype(np.uint8))
+                if not isinstance(illust_tensor, torch.Tensor):
+                    continue
+                np_imgs = illust_tensor.detach().cpu().numpy()
+                if np_imgs.ndim == 3:
+                    np_imgs = np_imgs[None, ...]
+                for np_img in np_imgs:
+                    pil_img = Image.fromarray(
+                        (np.clip(np_img, 0.0, 1.0) * 255).astype(np.uint8)
+                    ).convert("RGB")
                     illust_pil_list.append(pil_img)
 
         # Compose each page
@@ -402,26 +483,36 @@ class MiniBookLayoutCompositor:
                 current_illust = illust_pil_list[illust_idx]
                 illust_idx += 1
 
-            # Compose based on page type
+            # Compose based on page type. Text-heavy layouts return
+            # (page, dropped_lines) so overflow can be reported instead of
+            # silently dropping text.
             if page_type == "chapter_opener":
-                page_img = self._compose_chapter_opener(
+                page_img, dropped = self._compose_chapter_opener(
                     text, page_w, page_h, margins, font, body_font_size, title_font_size
                 )
             elif page_type == "text_with_illustration":
-                page_img = self._compose_text_with_illustration(
+                page_img, dropped = self._compose_text_with_illustration(
                     text, current_illust, page_w, page_h, margins, font, body_font_size
                 )
             elif page_type == "full_illustration":
-                page_img = self._compose_full_illustration(
+                page_img, dropped = self._compose_full_illustration(
                     text, current_illust, page_w, page_h, margins, font, body_font_size
                 )
             elif page_type == "section_break":
                 page_img = self._compose_section_break(
                     text, page_w, page_h, margins, font, body_font_size
                 )
+                dropped = 0
             else:  # text_only or fallback
-                page_img = self._compose_text_only(
+                page_img, dropped = self._compose_text_only(
                     text, page_w, page_h, margins, font, body_font_size
+                )
+
+            if dropped > 0:
+                print(
+                    f"[MiniBookLayoutCompositor] Page {i + 1} ({page_type}): "
+                    f"{dropped} line(s) did not fit and were dropped. "
+                    f"Reduce body_font_size, increase the page count, or shorten the text."
                 )
 
             # Convert PIL to tensor

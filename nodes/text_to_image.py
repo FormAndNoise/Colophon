@@ -100,8 +100,9 @@ class BookToolsTextToImage:
             draw = ImageDraw.Draw(dummy_image)
             bbox = draw.textbbox((0, 0), text, font=font)
             return bbox[2] - bbox[0]
-        except:
-            # Fallback to simple width calculation
+        except Exception:
+            # Fallback to simple width calculation; keep this narrow so a real
+            # interrupt (KeyboardInterrupt/SystemExit) still propagates.
             return sum(font.getbbox(char)[2] - font.getbbox(char)[0] for char in text)
 
     def calculate_text_size(self, text, font_size, font_path, max_width, max_height, line_height_factor, char_spacing_factor, text_justification="left"):
@@ -313,11 +314,9 @@ class BookToolsTextToImage:
 
         # Calculate spacing and dimensions
         spacing = font.size * char_spacing
-        text_height = font.getbbox(text)[3] - font.getbbox(text)[1]
-        
+
         # Calculate text dimensions first
         bbox = draw.textbbox((x, y), text, font=font)
-        text_width = bbox[2] - bbox[0]
         text_height = bbox[3] - bbox[1]
         
         # Create gradient colors if needed

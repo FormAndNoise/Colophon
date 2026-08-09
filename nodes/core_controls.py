@@ -5,6 +5,7 @@ Contains the MiniBook text/prompt control nodes plus the BookTools suite
 (prompt scheduling, loopback, font download, text overlays, etc.).
 """
 
+import os
 import re
 import random
 from PIL import Image, ImageDraw, ImageFont
@@ -18,6 +19,43 @@ try:
 except Exception:
     def interrupt_processing():
         pass
+
+
+# Bundled fonts ship with the pack; use them as a portable fallback so text
+# nodes render with a real TTF when the user-configured font path is missing.
+_BUNDLED_FONT_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fonts"
+)
+
+
+def _bundled_font_fallback():
+    """Return the path of the first bundled .ttf, or None if unavailable."""
+    try:
+        for name in sorted(os.listdir(_BUNDLED_FONT_DIR)):
+            if name.lower().endswith(".ttf"):
+                return os.path.join(_BUNDLED_FONT_DIR, name)
+    except OSError:
+        pass
+    return None
+
+
+def _safe_truetype(font_path, size):
+    """Load a TTF with fallbacks: requested path -> bundled font -> Windows
+    arial -> Pillow's embedded default. Never raises for a missing font."""
+    try:
+        return ImageFont.truetype(font_path, size)
+    except Exception:
+        pass
+    bundled = _bundled_font_fallback()
+    if bundled:
+        try:
+            return ImageFont.truetype(bundled, size)
+        except Exception:
+            pass
+    try:
+        return ImageFont.truetype("C:/Windows/Fonts/arial.ttf", size)
+    except Exception:
+        return ImageFont.load_default()
 
 
 class MiniBookTextParser:
@@ -151,6 +189,7 @@ class BookToolsPromptSelector:
     """
     Selects and concatenates values from a dictionary based on input indices and ranges.
     The input string contains 1-based indices which are converted to dictionary keys.
+    Accepts comma-separated indices and inclusive ranges, e.g. "1,2,3" or "1-3,5".
     Assumes the dictionary values are strings which will be concatenated and returned as a single string.
     """
 
@@ -162,7 +201,7 @@ class BookToolsPromptSelector:
         return {
             "required": {
                 "dictionary": ("DICTIONARY", ),
-                "selected_indexes": ("INT", {
+                "selected_indexes": ("STRING", {
                     "multiline": False,
                     "default": "1,2,3"
                 }),
@@ -174,16 +213,44 @@ class BookToolsPromptSelector:
     CATEGORY = "selector"
     OUTPUT_NODE = False
 
-    def main(self, dictionary: dict, selected_indexes: int):
+    @staticmethod
+    def _parse_indexes(selected_indexes):
+        """Parse "1,2,3" / "1-3,5" style index specs into a list of 1-based ints."""
+        indexes = []
+        for token in str(selected_indexes).split(','):
+            token = token.strip()
+            if not token:
+                continue
+            if '-' in token:
+                start_s, _, end_s = token.partition('-')
+                try:
+                    start, end = int(start_s.strip()), int(end_s.strip())
+                except ValueError:
+                    raise ValueError(f"Invalid index range in selected_indexes: {token!r}")
+                indexes.extend(range(start, end + 1))
+            else:
+                try:
+                    indexes.append(int(token))
+                except ValueError:
+                    raise ValueError(f"Invalid index in selected_indexes: {token!r}")
+        return indexes
+
+    def main(self, dictionary: dict, selected_indexes):
         if not isinstance(dictionary, dict):
-            raise ValueError("Conditioning must be a dictionary.")
+            raise ValueError("dictionary input must be a dictionary.")
 
-        if not isinstance(selected_indexes, int):
-            raise ValueError("selected_indexes must be an integer.")
+        # Legacy graphs may still deliver a plain INT widget value.
+        if isinstance(selected_indexes, int):
+            return (str(dictionary.get(str(selected_indexes), '')),)
 
-        result_string = str(dictionary.get(str(selected_indexes), ''))
+        if not isinstance(selected_indexes, str):
+            raise ValueError(
+                "selected_indexes must be a string of 1-based indices, "
+                "e.g. '1,2,3' or '1-3'."
+            )
 
-        return (result_string,)
+        parts = [str(dictionary.get(str(i), '')) for i in self._parse_indexes(selected_indexes)]
+        return ('\n'.join(parts),)
 
 
 class BookToolsPromptSchedule:
@@ -257,7 +324,8 @@ class BookToolsLoopStart:
     RETURN_NAMES = ("*",)
 
     def run(self, first_loop, loop):
-        global reset_global
+        # reset_global is read-only here (assigned by BookToolsLoop); no
+        # `global` declaration needed for reads.
         if reset_global == True:
             return (first_loop,)
         if hasattr(loop, 'next'):
@@ -266,7 +334,6 @@ class BookToolsLoopStart:
 
     @classmethod
     def IS_CHANGED(self, first_loop, loop):
-        global reset_global
         if reset_global == True:
             return (first_loop,)
         if hasattr(loop, 'next'):
@@ -318,7 +385,9 @@ class BookToolsDownloadFont:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "font_name": (list(cls.SUPPORTED_FONTS.keys()), {"default": "Open Sans"}),
+                # Default must be a member of the option list; ComfyUI combo
+                # widgets reject (or silently mis-send) out-of-list defaults.
+                "font_name": (list(cls.SUPPORTED_FONTS.keys()), {"default": "Delius"}),
             }
         }
 
@@ -430,8 +499,9 @@ class BookToolsImageTextOverlay:
             draw = ImageDraw.Draw(dummy_image)
             bbox = draw.textbbox((0, 0), text, font=font)
             return bbox[2] - bbox[0]
-        except:
-
+        except Exception:
+            # Fall back to per-character widths; keep this narrow so a real
+            # interrupt (KeyboardInterrupt/SystemExit) still propagates.
             return sum(font.getbbox(char)[2] - font.getbbox(char)[0] for char in text)
 
     def calculate_text_size(self, text, font_size, font_path, max_width, max_height, line_height_factor):
@@ -513,7 +583,7 @@ class BookToolsImageTextOverlay:
             optimal_font_size = min_font_size
             optimal_lines, _, _, _ = self.calculate_text_size(text, min_font_size, font, effective_width, effective_height, line_height_factor)
 
-        loaded_font = ImageFont.truetype(font, optimal_font_size)
+        loaded_font = _safe_truetype(font, optimal_font_size)
         draw = ImageDraw.Draw(image_pil)
 
         line_height = int(optimal_font_size * line_height_factor)
@@ -566,7 +636,7 @@ class BookToolsCalculateTextGrowth:
     CATEGORY = "image/text"
 
     def calculate_text_bounds(self, text, font_size, font_path, max_width, line_height_factor):
-        font = ImageFont.truetype(font_path, font_size)
+        font = _safe_truetype(font_path, font_size)
         paragraphs = text.split('\n')
         max_line_width = 0
         total_lines = 0
@@ -600,14 +670,10 @@ class BookToolsCalculateTextGrowth:
         return max_line_width, total_height
 
     def calculate(self, text, mask_width, mask_height, min_font_size, font, padding, line_height_factor):
-        textbox_width = mask_width + (2 * padding)
-        textbox_height = mask_height + (2 * padding)
-
-        effective_width = textbox_width - 2 * padding
-        effective_height = textbox_height - 2 * padding
-
+        # The text box is the mask plus padding on each side, and the layout
+        # wraps against the box interior — which is exactly the mask width.
         text_width, text_height = self.calculate_text_bounds(
-            text, min_font_size, font, effective_width, line_height_factor
+            text, min_font_size, font, mask_width, line_height_factor
         )
 
         width_ratio = (text_width / mask_width) / 2
@@ -654,6 +720,12 @@ class BookToolsRandomTextOverlay:
         image_np = image_tensor.cpu().numpy()
         image_pil = Image.fromarray((image_np.squeeze(0) * 255).astype(np.uint8))
 
+        # Nothing to overlay: return the image unchanged instead of crashing
+        # with max() over an empty sequence.
+        if not text or not text.strip():
+            image_tensor_out = torch.tensor(np.array(image_pil).astype(np.float32) / 255.0)
+            return (torch.unsqueeze(image_tensor_out, 0),)
+
         image_pil = image_pil.convert('RGBA')
         color_rgb = tuple(int(color.lstrip("#")[i:i+2], 16) for i in (0, 2, 4))
 
@@ -663,7 +735,7 @@ class BookToolsRandomTextOverlay:
         text_overlay = Image.new('RGBA', image_pil.size, (0, 0, 0, 0))
         text_draw = ImageDraw.Draw(text_overlay)
 
-        loaded_font = ImageFont.truetype(font, font_size)
+        loaded_font = _safe_truetype(font, font_size)
 
         max_width = image_pil.width - (margin * 2) - (padding * 2)
         line_height = int(font_size * line_height_factor)
