@@ -405,6 +405,9 @@ class BookToolsDownloadFont:
         fonts_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "fonts")
         os.makedirs(fonts_dir, exist_ok=True)
 
+        if font_name not in self.SUPPORTED_FONTS:
+            raise ValueError(f"Unsupported font: {font_name!r}")
+
         font_filename = self.SUPPORTED_FONTS[font_name] + ".ttf"
         font_path = os.path.join(fonts_dir, font_filename)
 
@@ -423,7 +426,7 @@ class BookToolsDownloadFont:
 
         try:
 
-            response = requests.get(api_url, headers=headers)
+            response = requests.get(api_url, headers=headers, timeout=(10, 30))
             response.raise_for_status()
             css = response.text
 
@@ -437,11 +440,13 @@ class BookToolsDownloadFont:
                 raise ValueError("Could not find font URL in CSS")
 
             parsed_url = urlparse(font_url)
-            if not all([parsed_url.scheme, parsed_url.netloc]):
+            if parsed_url.scheme != "https" or parsed_url.hostname != "fonts.gstatic.com":
                 raise ValueError("Invalid font URL")
 
-            font_response = requests.get(font_url, headers=headers)
+            font_response = requests.get(font_url, headers=headers, timeout=(10, 60))
             font_response.raise_for_status()
+            if len(font_response.content) > 20 * 1024 * 1024:
+                raise ValueError("Downloaded font exceeds the 20 MiB safety limit")
 
             with open(font_path, 'wb') as f:
                 f.write(font_response.content)

@@ -1,14 +1,18 @@
 import sys
 import os
-import folder_paths
+try:
+    import folder_paths
+except ImportError:
+    folder_paths = None
 
 # Diagnostic: confirm which bridge file ComfyUI actually loaded (catches stale copies).
 print(f"[MiniBook] bridge loaded from {__file__}")
 
 # Ensure comfyui-llm-toolkit is on sys.path so we can import its internals.
-llm_toolkit_path = os.path.join(folder_paths.get_folder_paths("custom_nodes")[0], "comfyui-llm-toolkit")
-if llm_toolkit_path not in sys.path:
-    sys.path.append(llm_toolkit_path)
+if folder_paths is not None:
+    llm_toolkit_path = os.path.join(folder_paths.get_folder_paths("custom_nodes")[0], "comfyui-llm-toolkit")
+    if llm_toolkit_path not in sys.path:
+        sys.path.append(llm_toolkit_path)
 
 try:
     from send_request import send_request, run_async

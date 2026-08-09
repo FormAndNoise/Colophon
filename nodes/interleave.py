@@ -16,13 +16,10 @@ class InterleaveImageLists:
 
     def interleave(self, images1, images2):
         result = []
-        min_len = min(len(images1), len(images2))
-        for i in range(min_len):
-            result.append(images1[i])
-            result.append(images2[i])
-        # Stack all tensors into a single batch tensor (N, H, W, C).
-        # If the lists are empty, return an empty batch instead of crashing
-        # in torch.cat over an empty list.
+        for first, second in zip(images1, images2):
+            result.extend((first, second))
+        result.extend(images1[len(images2):])
+        result.extend(images2[len(images1):])
         if not result:
             raise ValueError(
                 "[InterleaveImageLists] Both image lists are empty; nothing to interleave."
