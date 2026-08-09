@@ -20,7 +20,7 @@ MiniBookLayoutCompositor = load_node_module("layout_compositor").MiniBookLayoutC
 
 
 def test_interleave_rejects_empty_inputs_instead_of_torch_cat_failure():
-    with pytest.raises(ValueError, match="at least one image"):
+    with pytest.raises(ValueError, match="nothing to interleave"):
         InterleaveImageLists().interleave([], [])
 
 
@@ -33,12 +33,19 @@ def test_interleave_preserves_unpaired_images():
 
 
 def test_full_illustration_caption_is_rendered_inside_bottom_margin():
-    page = MiniBookLayoutCompositor()._compose_full_illustration(
+    # Post front-end audit the compositor returns (page, dropped_caption_lines)
+    # and places the caption at the bottom of the CONTENT area, i.e. just above
+    # the bottom margin band (pre-fix it drew inside/below the margin).
+    page, dropped = MiniBookLayoutCompositor()._compose_full_illustration(
         "A short caption.", Image.new("RGB", (20, 20), (10, 10, 10)), 200, 200,
         {"left": 10, "right": 10, "top": 10, "bottom": 40}, "missing-font.ttf", 20)
+    assert dropped == 0
     pixels = np.asarray(page)
-    assert np.any(np.any(pixels[160:200] != (10, 10, 10), axis=2))
-    assert np.any(np.any(pixels[160:200] != (252, 250, 245), axis=2))
+    bg = (252, 250, 245)
+    # Caption must render above the bottom margin band ...
+    assert np.any(np.all(pixels[140:160] != bg, axis=2))
+    # ... and the margin band itself must stay clean (no spill into margin).
+    assert not np.any(np.all(pixels[160:200] != bg, axis=2))
 
 
 @pytest.mark.parametrize("text", ["", "   ", "\n\n"])

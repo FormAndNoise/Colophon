@@ -10,7 +10,7 @@ import pytest
 import torch
 from PIL import Image
 
-from conftest import PACK
+from tests.conftest import PACK
 
 MAPPINGS = PACK.NODE_CLASS_MAPPINGS
 
