@@ -1,0 +1,76 @@
+name: CI
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint-and-test:
+    name: Lint & Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+      fail-fast: false
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install Pillow numpy requests fontTools
+
+      - name: Syntax check (compileall)
+        run: python -m compileall -q .
+
+      - name: Lint — fatal errors (E9xx, F)
+        run: python -m flake8 --select=E9,F --exclude=__pycache__ .
+
+      - name: Lint — style (informational, non-blocking)
+        run: python -m flake8 --max-line-length=120 --exclude=__pycache__ --statistics -qq . || true
+
+      - name: Import smoke test
+        run: |
+          cd ..
+          python - <<'SMOKE'
+          import sys, importlib, types, os
+          fp = types.ModuleType('folder_paths')
+          fp.get_folder_paths = lambda k: [os.path.abspath('.')]
+          fp.get_output_directory = lambda: os.path.abspath('./output')
+          sys.modules['folder_paths'] = fp
+          sys.path.insert(0, os.path.abspath('.'))
+          pkg = os.path.basename(os.environ['GITHUB_WORKSPACE'])
+          m = importlib.import_module(pkg)
+          count = len(m.NODE_CLASS_MAPPINGS)
+          print(f"IMPORT OK — {count} nodes registered")
+          assert count > 0, "NODE_CLASS_MAPPINGS is empty"
+          SMOKE
+
+      - name: Run tests
+        run: python -m pytest -q --tb=short
+
+  # Intentional-failure canary: ensure the pipeline actually catches bad code.
+  # This job is expected to FAIL if uncommented — use it to verify CI is wired correctly,
+  # then re-comment it.
+  # verify-pipeline-catches-failures:
+  #   name: Canary — must fail
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.11"
+  #     - run: |
+  #         echo "assert False, 'intentional canary failure'" > test_canary.py
+  #         pip install pytest
+  #         python -m pytest test_canary.py -q

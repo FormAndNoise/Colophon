@@ -23,6 +23,4 @@ class InterleaveImageLists:
         # Stack all tensors into a single batch tensor (N, H, W, C)
         return (torch.cat(result, dim=0),)
 
-NODE_CLASS_MAPPINGS = {
-    "InterleaveImageLists": InterleaveImageLists
-}
+

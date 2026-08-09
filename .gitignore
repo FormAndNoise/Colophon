@@ -160,3 +160,12 @@ cython_debug/
 #.idea/
 workflows/minibook_editorial_OptionB.json
 workflow_editorial_engine.json
+
+# Worktrees created by tooling
+.worktrees/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
