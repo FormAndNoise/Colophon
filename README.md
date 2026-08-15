@@ -1,8 +1,8 @@
-# MiniBook Studio: An LLM-Driven Publishing Suite for ComfyUI
+# Colophon: An LLM-Driven Publishing Suite for ComfyUI
 
-![MiniBook Studio Workflow](assets/screen.png)
+![Colophon Workflow](assets/screen.png)
 
-MiniBook Studio is a modular suite of ComfyUI custom nodes designed to automate the roles of a Literary Editor, Art Director, and Layout Designer. Rather than blindly chunking text or generating disconnected images, this pipeline uses LLM orchestration to build cohesive, formatted, and visually consistent storybooks and graphic novels.
+Colophon is a modular suite of ComfyUI custom nodes designed to automate the roles of a Literary Editor, Art Director, and Layout Designer. Rather than blindly chunking text or generating disconnected images, this pipeline uses LLM orchestration to build cohesive, formatted, and visually consistent storybooks and graphic novels.
 
 ## 📖 The Concept: Human-in-the-Loop Orchestration
 Built for the demands of modern creative studios, MiniBook operates on the philosophy of the **Human-in-the-Loop Director**. This is not an automated content mill. It is a highly controlled pipeline that empowers a human creator to curate, audit, and refine the AI's output. 

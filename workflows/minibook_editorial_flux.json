@@ -1,0 +1,2071 @@
+{
+  "id": "4c43687c-e8ca-403d-8bff-8a29f250cf47",
+  "revision": 0,
+  "last_node_id": 640,
+  "last_link_id": 78,
+  "nodes": [
+    {
+      "id": 1013,
+      "type": "MiniBookStoryInputs",
+      "pos": [
+        99,
+        126
+      ],
+      "size": [
+        400,
+        300
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "format",
+          "type": "STRING",
+          "links": [
+            40
+          ]
+        },
+        {
+          "name": "theme",
+          "type": "STRING",
+          "links": [
+            41
+          ]
+        },
+        {
+          "name": "art_style",
+          "type": "STRING",
+          "links": [
+            43
+          ]
+        },
+        {
+          "name": "constraints",
+          "type": "STRING",
+          "links": [
+            42
+          ]
+        },
+        {
+          "name": "character_description",
+          "type": "STRING",
+          "links": [
+            44
+          ]
+        }
+      ],
+      "title": "Story Inputs (MiniBook)",
+      "properties": {
+        "Node name for S&R": "MiniBookStoryInputs"
+      },
+      "widgets_values": [
+        "word dense adult level reading novel.",
+        "A story dealing with a woman coming to terms with the discovery that her ancestors were capitalist grifters in 20th and 21st centuries.   Set in a utopian  dystopic future where we can communicate with species like whales and  dolphins through the assistance of ai.",
+        "futuristic art nouveau in monochrome",
+        "futuristic world in a post apocalyptic landscape where technnology still persists and moves forward, but at the detriment of the well being of humans.",
+        "Alfa, a 36 year old  woman with an inflated ego and the brains to back it up."
+      ]
+    },
+    {
+      "id": 4,
+      "type": "MasterBookControl",
+      "pos": [
+        549,
+        720
+      ],
+      "size": [
+        297,
+        171
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "format",
+          "name": "format",
+          "type": "STRING",
+          "link": 40
+        },
+        {
+          "localized_name": "theme",
+          "name": "theme",
+          "type": "STRING",
+          "link": 41
+        },
+        {
+          "localized_name": "constraints",
+          "name": "constraints",
+          "type": "STRING",
+          "link": 42
+        },
+        {
+          "localized_name": "art_style",
+          "name": "art_style",
+          "type": "STRING",
+          "link": 43
+        },
+        {
+          "localized_name": "character_description",
+          "name": "character_description",
+          "type": "STRING",
+          "link": 44
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "links": [
+            45
+          ]
+        },
+        {
+          "localized_name": "art_style",
+          "name": "art_style",
+          "type": "STRING",
+          "links": [
+            68
+          ]
+        },
+        {
+          "localized_name": "character_description",
+          "name": "character_description",
+          "type": "STRING",
+          "links": [
+            69
+          ]
+        }
+      ],
+      "title": "Master Book Control",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MasterBookControl"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 5,
+      "type": "LLMToolkitTextGenerator",
+      "pos": [
+        1044,
+        585
+      ],
+      "size": [
+        243,
+        234
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "context",
+          "name": "context",
+          "shape": 7,
+          "type": "*",
+          "link": 46
+        },
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": 45
+        },
+        {
+          "localized_name": "hide_thinking",
+          "name": "hide_thinking",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "hide_thinking"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "context",
+          "name": "context",
+          "type": "*",
+          "links": null
+        },
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            65,
+            74
+          ]
+        }
+      ],
+      "title": "Story Generator (LLM 1)",
+      "properties": {
+        "cnr_id": "llm-toolkit",
+        "ver": "d0a526e850a90d1bac0025ddd977b96a09989144",
+        "Node name for S&R": "LLMToolkitTextGenerator"
+      },
+      "widgets_values": [
+        "Write a n anthology of pooetry with existential themes.   adult oriented with subtle messages.   funny.",
+        true,
+        "# THE WEIGHT OF SALT\n\n## A Novel in Fragments\n\n---\n\n### I. The Inheritance Protocol\n\nAlfa Vestergaard-Chen received the notification on a Tuesday, though Tuesdays had ceased to mean anything meaningful sometime around the Third Correction, when the Consortium had rationalized the calendar into productivity cycles and mourning windows. He was standing in his kitchen\u2014which was really just an alcove appended to his living cube in the Stilts, that vertical warren of prefab dwellings hoisted above the drowned lowlands of what had once been Copenhagen\u2014when the ancestral archive pinged against the inside of his skull.\n\nHe was thirty-six. He was, by his own frequent estimation, magnificent. Two meters of engineered symmetry, shoulders broadened by subsidized myostatin therapy, jaw resculpted twice, once for fashion and once for spite. He had the kind of body that required maintenance the way certain cathedrals require restoration: constant, expensive, faintly ridiculous. He caught his reflection in the black glass of the induction panel and, as always, approved.\n\n*Vestergaard-Chen, A.,* the archive intoned, in the neutral contralto the Consortium reserved for legal matters. *Genealogical disclosure mandate 4471-c has matured. Your lineage packet is now available for integrated review. Non-consumption within ninety cycles will result in involuntary somatic upload during REM.*\n\nHe said, aloud, to no one: \"Push it.\"\n\n*Cannot defer. Mandate is terminal.*\n\nSo he sat down on the floor\u2014his one indulgent chair had been repossessed last quarter, an austerity he'd told his synchronates was aesthetic minimalism\u2014and closed his eyes, and let the dead pour in.\n\n---\n\n### II. What the Ledger Remembered\n\nThey came to him not as ghosts but as balance sheets.\n\nHis great-great-grandfather, Halvor Vestergaard, born 1948, died 2029, a man whose face Alfa had never seen and now saw in seventeen archival photographs simultaneously, each one radiating the smug pinkness of a species that had believed itself permanent. Halvor had run a firm. The archive rendered the firm's activities with the tender neutrality of an autopsy: *pharmaceutical arbitrage; regulatory capture; the systematic elevation of unit price on insulin analogs across sub-Saharan markets, 2011\u20132024; estimated preventable mortality attributable to pricing strategy: 340,000 to 510,000, with a confidence interval the archive presented in soft grey, as though embarrassed.*\n\nHis great-grandmother, Mei-Lin Chen, had pivoted the family capital into something called *carbon offset securitization,* a phrase the archive helpfully defined as *the practice of selling the imaginary future absence of harm as a present commodity, thereby monetizing the atmosphere twice.* She had died in 2061, in a compound in New Zealand, of complications the archive politely declined to specify but which Alfa understood, from context, involved a great deal of ketamine and a private submarine.\n\nHis grandfather. His father. The ledger unrolled.\n\nAlfa opened his eyes. The induction panel still held his reflection: the vain jaw, the trapezoids like folded wings. He understood, with a clarity that felt almost chemical, that every gram of the body he had spent his adult life curating had been purchased, ultimately, in a currency of other people's lungs.\n\nHe threw up into the recycler. The recycler thanked him for the biomass.\n\n---\n\n### III. The Cetacean Interview\n\nHe had a job, technically. He was a Junior Liaison, Grade Four, at the Interspecies Communications Bureau\u2014one of those roles the Consortium invented to give the credentialed poor something to feel about. The Bureau was headquartered on a decommissioned oil platform in the Kattegat, and Alfa commuted there three days a week by hydrofoil, staring at the monochrome sea and rehearsing witticisms he never delivered.\n\nThe work itself was extraordinary and he had, until this Tuesday, not once permitted himself to notice.\n\nThrough the Lattice\u2014the neural translation architecture whose acronym no one bothered to remember\u2014humans could now speak with cetaceans. Not perfectly. The whales spoke in a grammar of pressure and duration and remembered current, and the AI performed a kind of poetic simultaneous interpretation, rendering their utterances into human syntax with the disclaimer *approximate; connotative loss estimated at 34%.*\n\nThat afternoon, still hollowed out by the ledger, Alfa was assigned to interview a sperm whale designated *Individual 7,* who had been circling the platform for three days requesting, of all things, an audience with *someone who inherits.*\n\nHe descended to the listening chamber. He pressed his palms to the hydrophone plate. The Lattice bloomed behind his eyes.\n\n*You are one of the ones who inherits,* said Individual 7, and the AI rendered the voice as something between a cello and a slow landslide.\n\n\"Yes,\" Alfa said. His mouth was dry.\n\n*I have been told by the ones who translate that your people are beginning to be told what your grandfathers did. Is this true of you.*\n\n\"Today,\" Alfa said. \"It happened today.\"\n\n*Then I will wait,* said the whale, *until you are ready. I have three questions. I have carried them for a long time. My mother carried the first one. I acquired the second one myself. The third one is new.*\n\n\"Ask them now,\" Alfa said, and was surprised to find that he was weeping, discreetly, into the collar of his thermal.\n\n*The first question,* said Individual 7. *Did you know that the sound you made in the water killed our thinking. The seismic guns. The engines. My mother's mother could not find her sisters. Did you know.*\n\n\"I didn't. My family knew. My family was paid to know and to continue.\"\n\n*The second question. When you learned to speak with us, why did you not first apologize.*\n\nAlfa had no answer. The Lattice waited politely. The whale waited less politely; the connotative field around the pause was, the AI noted in a small helpful sidebar, *reproachful, with elements of pity.*\n\n*The third question,* said Individual 7 eventually. *It is the new one. It is this. Now that you know what you are, what will you do with the body you built on us.*\n\n---\n\n### IV. Interlude: The City in Monochrome\n\nConsider the city as he saw it that evening, riding the hydrofoil back through a slate dusk.\n\nCopenhagen-Above rose in tiered filigree, its towers laced with the sinuous ironwork of the New Nouveau\u2014an architectural revival that had swept the surviving northern capitals after the Second Correction, when someone in the Consortium's aesthetic division had decreed that a drowning civilization ought at least to drown *beautifully.* Every balcony, every solar lily, every wind-harp bore the whiplash curves of Mucha resurrected in graphene. The whole skyline in silvers and charcoals and the occasional bruise of near-black, because color had been rationed for a decade and no one had bothered to un-ration it; the eye had learned to love the gradient.\n\nBelow the Stilts, the old city lay under six meters of brackish water, its cathedral spires poking up like the fingers of someone politely requesting to be excused from the table.\n\nThe gulls were gone. The terns were gone. The Lattice had told him, once, that the remaining seabirds had asked to be left alone, and the request had been logged and ignored, because logging was cheaper than compliance and compliance was cheaper than change.\n\nHe thought: *I am the change that was refused.* Then he thought: *No. That is still vanity. I am not the change. I am one of the things that must be changed.*\n\nHe was unaccustomed to the distinction. It sat in him like swallowed metal.\n\n---\n\n### V. The Confession He Could Not Make\n\nHe tried, that week, to tell his synchronates.\n\nThey met at the Vault, a members-only oxygen bar on the ninetieth tier, where the air was scrubbed to pre-industrial ppm and cost accordingly. Sena was there, and Bj\u00f6rn-Adaeze, and the twins whose names Alfa had never mastered because they answered interchangeably. They were beautiful in the way he was beautiful: assembled.\n\n\"I got my disclosure,\" he said.\n\n\"Oh, *god,*\" said Sena, with the immediate sympathy of the guilty. \"Was it awful?\"\n\n\"Insulin,\" Alfa said. \"Carbon fraud. There's a whole section on\u2014there was a lithium operation in Bolivia in the forties, my grandfather\u2014\"\n\n\"Everyone's grandfather,\" said Bj\u00f6rn-Adaeze, waving a hand tipped in mother-of-pearl. \"*Everyone's.* That's the point of the disclosure, darling, it's a leveling ritual. You're supposed to feel it and metabolize it and move on. It's a *cleanse.*\"\n\n\"A whale asked me what I was going to do about it.\"\n\nThe table went quiet in the particular way that meant he had committed a category error.\n\n\"Alfa,\" said Sena, gently, \"you can't let the cetacean liaison work colonize your interiority. They're going to say things like that. They're *whales.* They have the moral leisure.\"\n\n\"The moral leisure,\" he repeated.\n\n\"They didn't build any of this,\" said one of the twins, gesturing at the vaulted room, the fluted sconces, the entire trembling apparatus of the surviving world. \"It's easy to have clean hands when you don't have hands.\"\n\nHe looked at his own hands. Broad, veined, engineered, faintly perfumed. He thought: *these hands have never made anything. These hands have only ever been made.*\n\nHe excused himself before the second course.\n\n---\n\n### VI. What He Did Instead\n\nHe did not, reader, become a saint. Let us be clear-eyed. He was thirty-six, and vain, and the vanity did not evaporate; it merely acquired a new object. He began to cultivate the vanity of penance, which is only marginally better than the vanity of ignorance, and he knew it, and he continued anyway, because continuing was the only verb available to him.\n\nHe requested reassignment to the Restitution Desk, a small and unloved office within the Bureau whose mandate\u2014drafted by idealists, ratified by cynics, funded by no one\u2014was to broker material reparations between the cetacean nations and the human polities responsible for their historical suffering. The reassignment was granted within a day, which told him something about how few people had ever asked.\n\nHe liquidated the trust. This was harder than he expected, because the trust was a hydra: shell within shell, jurisdiction within jurisdiction, his ancestors' cleverness reaching forward through time to protect wealth from precisely the kind of decision he was trying to make. It took him four months of forensic accounting, and at the end of it he was thinner, plainer, and the possessor of a single certified transfer authorization for an amount the ledger rendered in a font so large it seemed almost apologetic.\n\nHe gave it to the whales. Which is to say: he gave it to the trust the Lattice-adjacent lawyers had constructed on the cetaceans' behalf, an instrument designed to fund the acoustic quieting of the shipping lanes and the buyback of the last industrial krill concessions and the slow, expensive work of letting the sea be, again, a place a whale could think in.\n\nIndividual 7 was informed. Individual 7, through the Lattice, sent back a message that the AI struggled to render and eventually offered as: *This is a beginning that acknowledges it is not an ending. My mother would have been surprised. I am less surprised, because I have met you. Continue.*\n\n---\n\n### VII. Coda: The Body He Kept\n\nHe did not un-make his body. He had thought he might; he had drafted, in a maudlin hour, a plan to reverse the therapies, to shrink back down to some imagined authentic scale. But this too, he came to understand, was theater. The body was already built. Un-building it would only be another performance, and the world had performances enough.\n\nInstead he learned to carry it differently. He walked, in the last pages of that year, along the upper promenade of the Stilts at dawn, the monochrome city unfurling its ironwork around him, and he felt the weight of his shoulders as a debt rather than a trophy\u2014a debt he could not repay but could, at least, refuse to add to.\n\nBelow him, in the drowned streets, the water moved with the tide.\n\nSomewhere south of the Skagerrak, a sperm whale descended into a column of quiet the Bureau had purchased that morning, and thought a long thought without interruption, for the first time in six generations.\n\nThe Lattice, which was always listening, logged the thought and did not translate it. Some inheritances, it had learned, were not for the inheritors.\n\nAlfa walked home. He was, by any honest accounting, still magnificent, and still ridiculous, and now also, faintly, something else\u2014something the old languages had a word for and the new ones had not yet re-coined.\n\nHe would have to invent it. He suspected, walking, that this was the work.\n\n---\n\n*\u2014end\u2014*"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [
+        2214,
+        135
+      ],
+      "size": [
+        405,
+        207
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 48
+        },
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 47
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            56
+          ]
+        }
+      ],
+      "title": "Positive Prompt (Scenes - LIST)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 8,
+      "type": "LoadImage",
+      "pos": [
+        99,
+        1197
+      ],
+      "size": [
+        288,
+        342
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            52
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Reference Image",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ComfyUI_00192_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "IPAdapterUnifiedLoaderFaceID",
+      "pos": [
+        549,
+        126
+      ],
+      "size": [
+        324,
+        198
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 49
+        },
+        {
+          "localized_name": "ipadapter",
+          "name": "ipadapter",
+          "shape": 7,
+          "type": "IPADAPTER",
+          "link": null
+        },
+        {
+          "localized_name": "preset",
+          "name": "preset",
+          "type": "COMBO",
+          "widget": {
+            "name": "preset"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lora_strength",
+          "name": "lora_strength",
+          "type": "FLOAT",
+          "widget": {
+            "name": "lora_strength"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "provider",
+          "name": "provider",
+          "type": "COMBO",
+          "widget": {
+            "name": "provider"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            50
+          ]
+        },
+        {
+          "localized_name": "ipadapter",
+          "name": "ipadapter",
+          "type": "IPADAPTER",
+          "links": [
+            51
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui_ipadapter_plus",
+        "ver": "a0f451a5113cf9becb0847b92884cb10cbdec0ef",
+        "Node name for S&R": "IPAdapterUnifiedLoaderFaceID"
+      },
+      "widgets_values": [
+        "FACEID PLUS V2",
+        0.6,
+        "CUDA"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "IPAdapterFaceID",
+      "pos": [
+        1044,
+        126
+      ],
+      "size": [
+        270,
+        441
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 50
+        },
+        {
+          "localized_name": "ipadapter",
+          "name": "ipadapter",
+          "type": "IPADAPTER",
+          "link": 51
+        },
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 52
+        },
+        {
+          "localized_name": "image_negative",
+          "name": "image_negative",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "attn_mask",
+          "name": "attn_mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "localized_name": "clip_vision",
+          "name": "clip_vision",
+          "shape": 7,
+          "type": "CLIP_VISION",
+          "link": 53
+        },
+        {
+          "localized_name": "insightface",
+          "name": "insightface",
+          "shape": 7,
+          "type": "INSIGHTFACE",
+          "link": 54
+        },
+        {
+          "localized_name": "weight",
+          "name": "weight",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weight"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weight_faceidv2",
+          "name": "weight_faceidv2",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weight_faceidv2"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weight_type",
+          "name": "weight_type",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "combine_embeds",
+          "name": "combine_embeds",
+          "type": "COMBO",
+          "widget": {
+            "name": "combine_embeds"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "start_at",
+          "name": "start_at",
+          "type": "FLOAT",
+          "widget": {
+            "name": "start_at"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "end_at",
+          "name": "end_at",
+          "type": "FLOAT",
+          "widget": {
+            "name": "end_at"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "embeds_scaling",
+          "name": "embeds_scaling",
+          "type": "COMBO",
+          "widget": {
+            "name": "embeds_scaling"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            55
+          ]
+        },
+        {
+          "localized_name": "face_image",
+          "name": "face_image",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "title": "IPAdapter FaceID (Consistency)",
+      "properties": {
+        "cnr_id": "comfyui_ipadapter_plus",
+        "ver": "a0f451a5113cf9becb0847b92884cb10cbdec0ef",
+        "Node name for S&R": "IPAdapterFaceID"
+      },
+      "widgets_values": [
+        1,
+        1,
+        "linear",
+        "concat",
+        0,
+        1,
+        "V only"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "KSampler",
+      "pos": [
+        2709,
+        126
+      ],
+      "size": [
+        270,
+        315
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 55
+        },
+        {
+          "localized_name": "positive",
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 56
+        },
+        {
+          "localized_name": "negative",
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 57
+        },
+        {
+          "localized_name": "latent_image",
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 58
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "steps",
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "cfg",
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sampler_name",
+          "name": "sampler_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "scheduler",
+          "name": "scheduler",
+          "type": "COMBO",
+          "widget": {
+            "name": "scheduler"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "denoise",
+          "name": "denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "denoise"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            59
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        307862921549097,
+        "randomize",
+        20,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 13,
+      "type": "EmptyLatentImage",
+      "pos": [
+        99,
+        1800
+      ],
+      "size": [
+        270,
+        144
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "batch_size",
+          "name": "batch_size",
+          "type": "INT",
+          "widget": {
+            "name": "batch_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            58
+          ]
+        }
+      ],
+      "title": "Latent (Portrait)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1032,
+        1
+      ]
+    },
+    {
+      "id": 14,
+      "type": "VAEDecode",
+      "pos": [
+        3087,
+        126
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 59
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 60
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            72
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 16,
+      "type": "MiniBookImagesToPDF",
+      "pos": [
+        4383,
+        126
+      ],
+      "size": [
+        270,
+        144
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 61
+        },
+        {
+          "localized_name": "dpi",
+          "name": "dpi",
+          "type": "INT",
+          "widget": {
+            "name": "dpi"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "page_size",
+          "name": "page_size",
+          "type": "COMBO",
+          "widget": {
+            "name": "page_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "PDF",
+          "name": "PDF",
+          "type": "PDF",
+          "links": [
+            63
+          ]
+        }
+      ],
+      "title": "PDF Compiler (MiniBook)",
+      "properties": {
+        "cnr_id": "comfyui_fill-nodes",
+        "ver": "2f0d24e4d87ed628a8a2c952ac90d4b1ccb3b79f",
+        "Node name for S&R": "MiniBookImagesToPDF"
+      },
+      "widgets_values": [
+        300,
+        "A4"
+      ],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 21,
+      "type": "CLIPTextEncode",
+      "pos": [
+        549,
+        387
+      ],
+      "size": [
+        405,
+        207
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 62
+        },
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            57
+          ]
+        }
+      ],
+      "title": "Negative Prompt",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "blurry, low quality, ugly, distorted, watermark, text, cropped, out of frame, bad anatomy, deformed"
+      ]
+    },
+    {
+      "id": 22,
+      "type": "CLIPVisionLoader",
+      "pos": [
+        99,
+        1980
+      ],
+      "size": [
+        270,
+        81
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP_VISION",
+          "name": "CLIP_VISION",
+          "type": "CLIP_VISION",
+          "links": [
+            53
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "CLIPVisionLoader"
+      },
+      "widgets_values": [
+        "CLIP-ViT-H-14-laion2B-s32B-b79K-REAL.safetensors"
+      ]
+    },
+    {
+      "id": 23,
+      "type": "IPAdapterInsightFaceLoader",
+      "pos": [
+        99,
+        2100
+      ],
+      "size": [
+        297,
+        144
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "provider",
+          "name": "provider",
+          "type": "COMBO",
+          "widget": {
+            "name": "provider"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "model_name",
+          "name": "model_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "model_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "INSIGHTFACE",
+          "name": "INSIGHTFACE",
+          "type": "INSIGHTFACE",
+          "links": [
+            54
+          ]
+        }
+      ],
+      "title": "InsightFace Loader",
+      "properties": {
+        "cnr_id": "comfyui_ipadapter_plus",
+        "ver": "a0f451a5113cf9becb0847b92884cb10cbdec0ef",
+        "Node name for S&R": "IPAdapterInsightFaceLoader"
+      },
+      "widgets_values": [
+        "CUDA",
+        "buffalo_l"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "MiniBookLLMProvider",
+      "pos": [
+        99,
+        2300
+      ],
+      "size": [
+        351,
+        207
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "context",
+          "name": "context",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        },
+        {
+          "localized_name": "provider",
+          "name": "provider",
+          "type": "COMBO",
+          "widget": {
+            "name": "provider"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "llm_model",
+          "name": "llm_model",
+          "type": "COMBO",
+          "widget": {
+            "name": "llm_model"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "external_api_key",
+          "name": "external_api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "external_api_key"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "context",
+          "name": "context",
+          "type": "*",
+          "links": [
+            46,
+            66,
+            75
+          ]
+        }
+      ],
+      "title": "LLM Provider (MiniBook)",
+      "properties": {
+        "cnr_id": "llm-toolkit",
+        "ver": "d0a526e850a90d1bac0025ddd977b96a09989144",
+        "Node name for S&R": "MiniBookLLMProvider"
+      },
+      "widgets_values": [
+        "openrouter",
+        "anthropic/claude-opus-4.7",
+        ""
+      ]
+    },
+    {
+      "id": 100,
+      "type": "MiniBookPDFSaver",
+      "pos": [
+        4752,
+        126
+      ],
+      "size": [
+        270,
+        144
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "pdf",
+          "name": "pdf",
+          "type": "PDF",
+          "link": 63
+        },
+        {
+          "localized_name": "output_directory",
+          "name": "output_directory",
+          "type": "STRING",
+          "widget": {
+            "name": "output_directory"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "filename",
+          "name": "filename",
+          "type": "STRING",
+          "widget": {
+            "name": "filename"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "PDF Saver (MiniBook)",
+      "properties": {
+        "cnr_id": "comfyui_fill-nodes",
+        "ver": "2f0d24e4d87ed628a8a2c952ac90d4b1ccb3b79f",
+        "Node name for S&R": "MiniBookPDFSaver"
+      },
+      "widgets_values": [
+        "output",
+        "minibook_editorial_output"
+      ],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 101,
+      "type": "MiniBookImageListToBatch",
+      "pos": [
+        4050,
+        126
+      ],
+      "size": [
+        243,
+        72
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 64
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            61
+          ]
+        }
+      ],
+      "title": "List to Batch (MiniBook)",
+      "properties": {
+        "cnr_id": "comfyui_fill-nodes",
+        "ver": "2f0d24e4d87ed628a8a2c952ac90d4b1ccb3b79f",
+        "Node name for S&R": "MiniBookImageListToBatch"
+      },
+      "widgets_values": [],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 600,
+      "type": "MiniBookLiteraryEditor",
+      "pos": [
+        1413,
+        126
+      ],
+      "size": [
+        270,
+        216
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "raw_story",
+          "name": "raw_story",
+          "type": "STRING",
+          "link": 65
+        },
+        {
+          "localized_name": "context",
+          "name": "context",
+          "type": "LLM_CONTEXT",
+          "link": 66
+        },
+        {
+          "localized_name": "book_format",
+          "name": "book_format",
+          "type": "COMBO",
+          "widget": {
+            "name": "book_format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "target_page_count",
+          "name": "target_page_count",
+          "type": "INT",
+          "widget": {
+            "name": "target_page_count"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sheet_size",
+          "name": "sheet_size",
+          "type": "COMBO",
+          "widget": {
+            "name": "sheet_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "editorial_plan",
+          "name": "editorial_plan",
+          "type": "STRING",
+          "links": [
+            67,
+            73
+          ]
+        },
+        {
+          "localized_name": "page_texts",
+          "name": "page_texts",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            70
+          ]
+        },
+        {
+          "localized_name": "page_types",
+          "name": "page_types",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            71
+          ]
+        }
+      ],
+      "title": "Literary Editor",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MiniBookLiteraryEditor"
+      },
+      "widgets_values": [
+        "novella",
+        25,
+        "US_Trade_6x9"
+      ]
+    },
+    {
+      "id": 610,
+      "type": "MiniBookEditorialArtDirector",
+      "pos": [
+        1782,
+        126
+      ],
+      "size": [
+        315,
+        126
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "editorial_plan",
+          "name": "editorial_plan",
+          "type": "STRING",
+          "link": 67
+        },
+        {
+          "localized_name": "art_style",
+          "name": "art_style",
+          "type": "STRING",
+          "link": 68
+        },
+        {
+          "localized_name": "character_description",
+          "name": "character_description",
+          "type": "STRING",
+          "link": 69
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "scene_prompts",
+          "name": "scene_prompts",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            47
+          ]
+        },
+        {
+          "localized_name": "illustration_page_indices",
+          "name": "illustration_page_indices",
+          "shape": 6,
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "title": "Editorial Art Director",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MiniBookEditorialArtDirector"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 620,
+      "type": "MiniBookLayoutCompositor",
+      "pos": [
+        3321,
+        126
+      ],
+      "size": [
+        306,
+        288
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "page_texts",
+          "name": "page_texts",
+          "type": "STRING",
+          "link": 70
+        },
+        {
+          "localized_name": "page_types",
+          "name": "page_types",
+          "type": "STRING",
+          "link": 71
+        },
+        {
+          "localized_name": "illustrations",
+          "name": "illustrations",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 72
+        },
+        {
+          "localized_name": "sheet_size",
+          "name": "sheet_size",
+          "type": "COMBO",
+          "widget": {
+            "name": "sheet_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "font",
+          "name": "font",
+          "type": "STRING",
+          "widget": {
+            "name": "font"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "body_font_size",
+          "name": "body_font_size",
+          "type": "INT",
+          "widget": {
+            "name": "body_font_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "title_font_size",
+          "name": "title_font_size",
+          "type": "INT",
+          "widget": {
+            "name": "title_font_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "margin_percent",
+          "name": "margin_percent",
+          "type": "FLOAT",
+          "widget": {
+            "name": "margin_percent"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "composed_pages",
+          "name": "composed_pages",
+          "type": "IMAGE",
+          "links": [
+            76
+          ]
+        }
+      ],
+      "title": "Layout Compositor",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MiniBookLayoutCompositor"
+      },
+      "widgets_values": [
+        "US_Trade_6x9",
+        "C:/Windows/Fonts/georgia.ttf",
+        42,
+        72,
+        12
+      ]
+    },
+    {
+      "id": 630,
+      "type": "MiniBookFrontMatter",
+      "pos": [
+        1782,
+        324
+      ],
+      "size": [
+        333,
+        342
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "editorial_plan",
+          "name": "editorial_plan",
+          "type": "STRING",
+          "link": 73
+        },
+        {
+          "localized_name": "raw_story",
+          "name": "raw_story",
+          "type": "STRING",
+          "link": 74
+        },
+        {
+          "localized_name": "context",
+          "name": "context",
+          "type": "LLM_CONTEXT",
+          "link": 75
+        },
+        {
+          "localized_name": "author_name",
+          "name": "author_name",
+          "type": "STRING",
+          "widget": {
+            "name": "author_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sheet_size",
+          "name": "sheet_size",
+          "type": "COMBO",
+          "widget": {
+            "name": "sheet_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "font",
+          "name": "font",
+          "type": "STRING",
+          "widget": {
+            "name": "font"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "include_dedication",
+          "name": "include_dedication",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "include_dedication"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "include_toc",
+          "name": "include_toc",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "include_toc"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "include_author_bio",
+          "name": "include_author_bio",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "include_author_bio"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "include_back_blurb",
+          "name": "include_back_blurb",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "include_back_blurb"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "front_pages",
+          "name": "front_pages",
+          "type": "IMAGE",
+          "links": [
+            77
+          ]
+        },
+        {
+          "localized_name": "back_pages",
+          "name": "back_pages",
+          "type": "IMAGE",
+          "links": [
+            78
+          ]
+        }
+      ],
+      "title": "Front Matter Generator",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MiniBookFrontMatter"
+      },
+      "widgets_values": [
+        "AJ Wells",
+        "US_Trade_6x9",
+        "C:/Windows/Fonts/georgia.ttf",
+        false,
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "id": 640,
+      "type": "MiniBookAssembler",
+      "pos": [
+        3726,
+        126
+      ],
+      "size": [
+        225,
+        126
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "body_pages",
+          "name": "body_pages",
+          "type": "IMAGE",
+          "link": 76
+        },
+        {
+          "localized_name": "front_pages",
+          "name": "front_pages",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 77
+        },
+        {
+          "localized_name": "back_pages",
+          "name": "back_pages",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 78
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "complete_book",
+          "name": "complete_book",
+          "type": "IMAGE",
+          "links": [
+            64
+          ]
+        }
+      ],
+      "title": "Book Assembler",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MiniBookAssembler"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 1010,
+      "type": "UNETLoader",
+      "pos": [
+        99,
+        1350
+      ],
+      "size": [
+        300,
+        100
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            49
+          ]
+        }
+      ],
+      "title": "Load Diffusion Model",
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "flux1-dev.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 1011,
+      "type": "DualCLIPLoader",
+      "pos": [
+        99,
+        1480
+      ],
+      "size": [
+        300,
+        135
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            48,
+            62
+          ]
+        }
+      ],
+      "title": "DualCLIPLoader",
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "t5xxl_fp16.safetensors",
+        "clip_l.safetensors",
+        "flux"
+      ]
+    },
+    {
+      "id": 1012,
+      "type": "VAELoader",
+      "pos": [
+        99,
+        1650
+      ],
+      "size": [
+        300,
+        100
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            60
+          ]
+        }
+      ],
+      "title": "Load VAE",
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "ae.safetensors"
+      ]
+    }
+  ],
+  "links": [
+    [
+      40,
+      1013,
+      0,
+      4,
+      0,
+      "STRING"
+    ],
+    [
+      41,
+      1013,
+      1,
+      4,
+      1,
+      "STRING"
+    ],
+    [
+      42,
+      1013,
+      3,
+      4,
+      2,
+      "STRING"
+    ],
+    [
+      43,
+      1013,
+      2,
+      4,
+      3,
+      "STRING"
+    ],
+    [
+      44,
+      1013,
+      4,
+      4,
+      4,
+      "STRING"
+    ],
+    [
+      45,
+      4,
+      0,
+      5,
+      1,
+      "STRING"
+    ],
+    [
+      46,
+      50,
+      0,
+      5,
+      0,
+      "*"
+    ],
+    [
+      47,
+      610,
+      0,
+      7,
+      1,
+      "STRING"
+    ],
+    [
+      48,
+      1011,
+      0,
+      7,
+      0,
+      "CLIP"
+    ],
+    [
+      49,
+      1010,
+      0,
+      9,
+      0,
+      "MODEL"
+    ],
+    [
+      50,
+      9,
+      0,
+      11,
+      0,
+      "MODEL"
+    ],
+    [
+      51,
+      9,
+      1,
+      11,
+      1,
+      "IPADAPTER"
+    ],
+    [
+      52,
+      8,
+      0,
+      11,
+      2,
+      "IMAGE"
+    ],
+    [
+      53,
+      22,
+      0,
+      11,
+      5,
+      "CLIP_VISION"
+    ],
+    [
+      54,
+      23,
+      0,
+      11,
+      6,
+      "INSIGHTFACE"
+    ],
+    [
+      55,
+      11,
+      0,
+      12,
+      0,
+      "MODEL"
+    ],
+    [
+      56,
+      7,
+      0,
+      12,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      57,
+      21,
+      0,
+      12,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      58,
+      13,
+      0,
+      12,
+      3,
+      "LATENT"
+    ],
+    [
+      59,
+      12,
+      0,
+      14,
+      0,
+      "LATENT"
+    ],
+    [
+      60,
+      1012,
+      0,
+      14,
+      1,
+      "VAE"
+    ],
+    [
+      61,
+      101,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      62,
+      1011,
+      0,
+      21,
+      0,
+      "CLIP"
+    ],
+    [
+      63,
+      16,
+      0,
+      100,
+      0,
+      "PDF"
+    ],
+    [
+      64,
+      640,
+      0,
+      101,
+      0,
+      "IMAGE"
+    ],
+    [
+      65,
+      5,
+      1,
+      600,
+      0,
+      "STRING"
+    ],
+    [
+      66,
+      50,
+      0,
+      600,
+      1,
+      "LLM_CONTEXT"
+    ],
+    [
+      67,
+      600,
+      0,
+      610,
+      0,
+      "STRING"
+    ],
+    [
+      68,
+      4,
+      1,
+      610,
+      1,
+      "STRING"
+    ],
+    [
+      69,
+      4,
+      2,
+      610,
+      2,
+      "STRING"
+    ],
+    [
+      70,
+      600,
+      1,
+      620,
+      0,
+      "STRING"
+    ],
+    [
+      71,
+      600,
+      2,
+      620,
+      1,
+      "STRING"
+    ],
+    [
+      72,
+      14,
+      0,
+      620,
+      2,
+      "IMAGE"
+    ],
+    [
+      73,
+      600,
+      0,
+      630,
+      0,
+      "STRING"
+    ],
+    [
+      74,
+      5,
+      1,
+      630,
+      1,
+      "STRING"
+    ],
+    [
+      75,
+      50,
+      0,
+      630,
+      2,
+      "LLM_CONTEXT"
+    ],
+    [
+      76,
+      620,
+      0,
+      640,
+      0,
+      "IMAGE"
+    ],
+    [
+      77,
+      630,
+      0,
+      640,
+      1,
+      "IMAGE"
+    ],
+    [
+      78,
+      630,
+      1,
+      640,
+      2,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.191817653772727,
+      "offset": [
+        442.0537243340786,
+        -2113.4536172639437
+      ]
+    }
+  },
+  "version": 0.4
+}

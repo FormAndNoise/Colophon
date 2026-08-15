@@ -1,0 +1,1987 @@
+{
+  "id": "4c43687c-e8ca-403d-8bff-8a29f250cf47",
+  "revision": 0,
+  "last_node_id": 640,
+  "last_link_id": 78,
+  "nodes": [
+    {
+      "id": 641,
+      "type": "MiniBookStoryInputs",
+      "pos": [
+        99,
+        126
+      ],
+      "size": [
+        400,
+        300
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "format",
+          "type": "STRING",
+          "links": [
+            40
+          ]
+        },
+        {
+          "name": "theme",
+          "type": "STRING",
+          "links": [
+            41
+          ]
+        },
+        {
+          "name": "art_style",
+          "type": "STRING",
+          "links": [
+            43
+          ]
+        },
+        {
+          "name": "constraints",
+          "type": "STRING",
+          "links": [
+            42
+          ]
+        },
+        {
+          "name": "character_description",
+          "type": "STRING",
+          "links": [
+            44
+          ]
+        }
+      ],
+      "title": "Story Inputs (MiniBook)",
+      "properties": {
+        "Node name for S&R": "MiniBookStoryInputs"
+      },
+      "widgets_values": [
+        "word dense adult level reading novel.",
+        "A story dealing with a woman coming to terms with the discovery that her ancestors were capitalist grifters in 20th and 21st centuries.   Set in a utopian  dystopic future where we can communicate with species like whales and  dolphins through the assistance of ai.",
+        "futuristic art nouveau in monochrome",
+        "futuristic world in a post apocalyptic landscape where technnology still persists and moves forward, but at the detriment of the well being of humans.",
+        "Alfa, a 36 year old  woman with an inflated ego and the brains to back it up."
+      ]
+    },
+    {
+      "id": 4,
+      "type": "MasterBookControl",
+      "pos": [
+        549,
+        720
+      ],
+      "size": [
+        297,
+        171
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "format",
+          "name": "format",
+          "type": "STRING",
+          "link": 40
+        },
+        {
+          "localized_name": "theme",
+          "name": "theme",
+          "type": "STRING",
+          "link": 41
+        },
+        {
+          "localized_name": "constraints",
+          "name": "constraints",
+          "type": "STRING",
+          "link": 42
+        },
+        {
+          "localized_name": "art_style",
+          "name": "art_style",
+          "type": "STRING",
+          "link": 43
+        },
+        {
+          "localized_name": "character_description",
+          "name": "character_description",
+          "type": "STRING",
+          "link": 44
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "links": [
+            45
+          ]
+        },
+        {
+          "localized_name": "art_style",
+          "name": "art_style",
+          "type": "STRING",
+          "links": [
+            68
+          ]
+        },
+        {
+          "localized_name": "character_description",
+          "name": "character_description",
+          "type": "STRING",
+          "links": [
+            69
+          ]
+        }
+      ],
+      "title": "Master Book Control",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MasterBookControl"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [
+        2214,
+        135
+      ],
+      "size": [
+        405,
+        207
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 48
+        },
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 47
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            56
+          ]
+        }
+      ],
+      "title": "Positive Prompt (Scenes - LIST)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 8,
+      "type": "LoadImage",
+      "pos": [
+        99,
+        1197
+      ],
+      "size": [
+        288,
+        342
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            52
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Reference Image",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ComfyUI_00192_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "IPAdapterUnifiedLoaderFaceID",
+      "pos": [
+        549,
+        126
+      ],
+      "size": [
+        324,
+        198
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 49
+        },
+        {
+          "localized_name": "ipadapter",
+          "name": "ipadapter",
+          "shape": 7,
+          "type": "IPADAPTER",
+          "link": null
+        },
+        {
+          "localized_name": "preset",
+          "name": "preset",
+          "type": "COMBO",
+          "widget": {
+            "name": "preset"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lora_strength",
+          "name": "lora_strength",
+          "type": "FLOAT",
+          "widget": {
+            "name": "lora_strength"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "provider",
+          "name": "provider",
+          "type": "COMBO",
+          "widget": {
+            "name": "provider"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            50
+          ]
+        },
+        {
+          "localized_name": "ipadapter",
+          "name": "ipadapter",
+          "type": "IPADAPTER",
+          "links": [
+            51
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui_ipadapter_plus",
+        "ver": "a0f451a5113cf9becb0847b92884cb10cbdec0ef",
+        "Node name for S&R": "IPAdapterUnifiedLoaderFaceID"
+      },
+      "widgets_values": [
+        "FACEID PLUS V2",
+        0.6,
+        "CUDA"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        99,
+        1431
+      ],
+      "size": [
+        270,
+        135
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "ckpt_name",
+          "name": "ckpt_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "ckpt_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            49
+          ]
+        },
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            48,
+            62
+          ]
+        },
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            60
+          ]
+        }
+      ],
+      "title": "SDXL Checkpoint",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "sd_xl_base_1.0.safetensors"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "IPAdapterFaceID",
+      "pos": [
+        1044,
+        126
+      ],
+      "size": [
+        270,
+        441
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 50
+        },
+        {
+          "localized_name": "ipadapter",
+          "name": "ipadapter",
+          "type": "IPADAPTER",
+          "link": 51
+        },
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 52
+        },
+        {
+          "localized_name": "image_negative",
+          "name": "image_negative",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "attn_mask",
+          "name": "attn_mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "localized_name": "clip_vision",
+          "name": "clip_vision",
+          "shape": 7,
+          "type": "CLIP_VISION",
+          "link": 53
+        },
+        {
+          "localized_name": "insightface",
+          "name": "insightface",
+          "shape": 7,
+          "type": "INSIGHTFACE",
+          "link": 54
+        },
+        {
+          "localized_name": "weight",
+          "name": "weight",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weight"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weight_faceidv2",
+          "name": "weight_faceidv2",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weight_faceidv2"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weight_type",
+          "name": "weight_type",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "combine_embeds",
+          "name": "combine_embeds",
+          "type": "COMBO",
+          "widget": {
+            "name": "combine_embeds"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "start_at",
+          "name": "start_at",
+          "type": "FLOAT",
+          "widget": {
+            "name": "start_at"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "end_at",
+          "name": "end_at",
+          "type": "FLOAT",
+          "widget": {
+            "name": "end_at"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "embeds_scaling",
+          "name": "embeds_scaling",
+          "type": "COMBO",
+          "widget": {
+            "name": "embeds_scaling"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            55
+          ]
+        },
+        {
+          "localized_name": "face_image",
+          "name": "face_image",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "title": "IPAdapter FaceID (Consistency)",
+      "properties": {
+        "cnr_id": "comfyui_ipadapter_plus",
+        "ver": "a0f451a5113cf9becb0847b92884cb10cbdec0ef",
+        "Node name for S&R": "IPAdapterFaceID"
+      },
+      "widgets_values": [
+        1,
+        1,
+        "linear",
+        "concat",
+        0,
+        1,
+        "V only"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "KSampler",
+      "pos": [
+        2709,
+        126
+      ],
+      "size": [
+        270,
+        315
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 55
+        },
+        {
+          "localized_name": "positive",
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 56
+        },
+        {
+          "localized_name": "negative",
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 57
+        },
+        {
+          "localized_name": "latent_image",
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 58
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "steps",
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "cfg",
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sampler_name",
+          "name": "sampler_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "scheduler",
+          "name": "scheduler",
+          "type": "COMBO",
+          "widget": {
+            "name": "scheduler"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "denoise",
+          "name": "denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "denoise"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            59
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        307862921549097,
+        "randomize",
+        25,
+        7,
+        "euler_ancestral",
+        "normal",
+        1
+      ]
+    },
+    {
+      "id": 13,
+      "type": "EmptyLatentImage",
+      "pos": [
+        99,
+        1656
+      ],
+      "size": [
+        270,
+        144
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "batch_size",
+          "name": "batch_size",
+          "type": "INT",
+          "widget": {
+            "name": "batch_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            58
+          ]
+        }
+      ],
+      "title": "Latent (Portrait)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1032,
+        1
+      ]
+    },
+    {
+      "id": 14,
+      "type": "VAEDecode",
+      "pos": [
+        3087,
+        126
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 59
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 60
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            72
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 16,
+      "type": "MiniBookImagesToPDF",
+      "pos": [
+        4383,
+        126
+      ],
+      "size": [
+        270,
+        144
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 61
+        },
+        {
+          "localized_name": "dpi",
+          "name": "dpi",
+          "type": "INT",
+          "widget": {
+            "name": "dpi"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "page_size",
+          "name": "page_size",
+          "type": "COMBO",
+          "widget": {
+            "name": "page_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "PDF",
+          "name": "PDF",
+          "type": "PDF",
+          "links": [
+            63
+          ]
+        }
+      ],
+      "title": "PDF Compiler (MiniBook)",
+      "properties": {
+        "cnr_id": "comfyui_fill-nodes",
+        "ver": "2f0d24e4d87ed628a8a2c952ac90d4b1ccb3b79f",
+        "Node name for S&R": "MiniBookImagesToPDF"
+      },
+      "widgets_values": [
+        300,
+        "A4"
+      ],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 21,
+      "type": "CLIPTextEncode",
+      "pos": [
+        549,
+        387
+      ],
+      "size": [
+        405,
+        207
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 62
+        },
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            57
+          ]
+        }
+      ],
+      "title": "Negative Prompt",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "blurry, low quality, ugly, distorted, watermark, text, cropped, out of frame, bad anatomy, deformed"
+      ]
+    },
+    {
+      "id": 22,
+      "type": "CLIPVisionLoader",
+      "pos": [
+        99,
+        1890
+      ],
+      "size": [
+        270,
+        81
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP_VISION",
+          "name": "CLIP_VISION",
+          "type": "CLIP_VISION",
+          "links": [
+            53
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.25.0",
+        "Node name for S&R": "CLIPVisionLoader"
+      },
+      "widgets_values": [
+        "CLIP-ViT-H-14-laion2B-s32B-b79K-REAL.safetensors"
+      ]
+    },
+    {
+      "id": 23,
+      "type": "IPAdapterInsightFaceLoader",
+      "pos": [
+        99,
+        2079
+      ],
+      "size": [
+        297,
+        144
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "provider",
+          "name": "provider",
+          "type": "COMBO",
+          "widget": {
+            "name": "provider"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "model_name",
+          "name": "model_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "model_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "INSIGHTFACE",
+          "name": "INSIGHTFACE",
+          "type": "INSIGHTFACE",
+          "links": [
+            54
+          ]
+        }
+      ],
+      "title": "InsightFace Loader",
+      "properties": {
+        "cnr_id": "comfyui_ipadapter_plus",
+        "ver": "a0f451a5113cf9becb0847b92884cb10cbdec0ef",
+        "Node name for S&R": "IPAdapterInsightFaceLoader"
+      },
+      "widgets_values": [
+        "CUDA",
+        "buffalo_l"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "MiniBookLLMProvider",
+      "pos": [
+        99,
+        2295
+      ],
+      "size": [
+        351,
+        207
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "context",
+          "name": "context",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        },
+        {
+          "localized_name": "provider",
+          "name": "provider",
+          "type": "COMBO",
+          "widget": {
+            "name": "provider"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "llm_model",
+          "name": "llm_model",
+          "type": "COMBO",
+          "widget": {
+            "name": "llm_model"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "external_api_key",
+          "name": "external_api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "external_api_key"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "context",
+          "name": "context",
+          "type": "*",
+          "links": [
+            46,
+            66,
+            75
+          ]
+        }
+      ],
+      "title": "LLM Provider (MiniBook)",
+      "properties": {
+        "cnr_id": "llm-toolkit",
+        "ver": "d0a526e850a90d1bac0025ddd977b96a09989144",
+        "Node name for S&R": "MiniBookLLMProvider"
+      },
+      "widgets_values": [
+        "openrouter",
+        "anthropic/claude-opus-4.7",
+        ""
+      ]
+    },
+    {
+      "id": 100,
+      "type": "MiniBookPDFSaver",
+      "pos": [
+        4752,
+        126
+      ],
+      "size": [
+        270,
+        144
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "pdf",
+          "name": "pdf",
+          "type": "PDF",
+          "link": 63
+        },
+        {
+          "localized_name": "output_directory",
+          "name": "output_directory",
+          "type": "STRING",
+          "widget": {
+            "name": "output_directory"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "filename",
+          "name": "filename",
+          "type": "STRING",
+          "widget": {
+            "name": "filename"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "PDF Saver (MiniBook)",
+      "properties": {
+        "cnr_id": "comfyui_fill-nodes",
+        "ver": "2f0d24e4d87ed628a8a2c952ac90d4b1ccb3b79f",
+        "Node name for S&R": "MiniBookPDFSaver"
+      },
+      "widgets_values": [
+        "output",
+        "minibook_editorial_output"
+      ],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 101,
+      "type": "MiniBookImageListToBatch",
+      "pos": [
+        4050,
+        126
+      ],
+      "size": [
+        243,
+        72
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 64
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            61
+          ]
+        }
+      ],
+      "title": "List to Batch (MiniBook)",
+      "properties": {
+        "cnr_id": "comfyui_fill-nodes",
+        "ver": "2f0d24e4d87ed628a8a2c952ac90d4b1ccb3b79f",
+        "Node name for S&R": "MiniBookImageListToBatch"
+      },
+      "widgets_values": [],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 600,
+      "type": "MiniBookLiteraryEditor",
+      "pos": [
+        1413,
+        126
+      ],
+      "size": [
+        270,
+        216
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "raw_story",
+          "name": "raw_story",
+          "type": "STRING",
+          "link": 79
+        },
+        {
+          "localized_name": "context",
+          "name": "context",
+          "type": "LLM_CONTEXT",
+          "link": 66
+        },
+        {
+          "localized_name": "book_format",
+          "name": "book_format",
+          "type": "COMBO",
+          "widget": {
+            "name": "book_format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "target_page_count",
+          "name": "target_page_count",
+          "type": "INT",
+          "widget": {
+            "name": "target_page_count"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sheet_size",
+          "name": "sheet_size",
+          "type": "COMBO",
+          "widget": {
+            "name": "sheet_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "editorial_plan",
+          "name": "editorial_plan",
+          "type": "STRING",
+          "links": [
+            67,
+            73
+          ]
+        },
+        {
+          "localized_name": "page_texts",
+          "name": "page_texts",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            70
+          ]
+        },
+        {
+          "localized_name": "page_types",
+          "name": "page_types",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            71
+          ]
+        }
+      ],
+      "title": "Literary Editor",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MiniBookLiteraryEditor"
+      },
+      "widgets_values": [
+        "novella",
+        25,
+        "US_Trade_6x9"
+      ]
+    },
+    {
+      "id": 610,
+      "type": "MiniBookEditorialArtDirector",
+      "pos": [
+        1782,
+        126
+      ],
+      "size": [
+        315,
+        126
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "editorial_plan",
+          "name": "editorial_plan",
+          "type": "STRING",
+          "link": 67
+        },
+        {
+          "localized_name": "art_style",
+          "name": "art_style",
+          "type": "STRING",
+          "link": 68
+        },
+        {
+          "localized_name": "character_description",
+          "name": "character_description",
+          "type": "STRING",
+          "link": 69
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "scene_prompts",
+          "name": "scene_prompts",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            47
+          ]
+        },
+        {
+          "localized_name": "illustration_page_indices",
+          "name": "illustration_page_indices",
+          "shape": 6,
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "title": "Editorial Art Director",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MiniBookEditorialArtDirector"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 620,
+      "type": "MiniBookLayoutCompositor",
+      "pos": [
+        3321,
+        126
+      ],
+      "size": [
+        306,
+        288
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "page_texts",
+          "name": "page_texts",
+          "type": "STRING",
+          "link": 70
+        },
+        {
+          "localized_name": "page_types",
+          "name": "page_types",
+          "type": "STRING",
+          "link": 71
+        },
+        {
+          "localized_name": "illustrations",
+          "name": "illustrations",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 72
+        },
+        {
+          "localized_name": "sheet_size",
+          "name": "sheet_size",
+          "type": "COMBO",
+          "widget": {
+            "name": "sheet_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "font",
+          "name": "font",
+          "type": "STRING",
+          "widget": {
+            "name": "font"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "body_font_size",
+          "name": "body_font_size",
+          "type": "INT",
+          "widget": {
+            "name": "body_font_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "title_font_size",
+          "name": "title_font_size",
+          "type": "INT",
+          "widget": {
+            "name": "title_font_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "margin_percent",
+          "name": "margin_percent",
+          "type": "FLOAT",
+          "widget": {
+            "name": "margin_percent"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "composed_pages",
+          "name": "composed_pages",
+          "type": "IMAGE",
+          "links": [
+            76
+          ]
+        }
+      ],
+      "title": "Layout Compositor",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MiniBookLayoutCompositor"
+      },
+      "widgets_values": [
+        "US_Trade_6x9",
+        "C:/Windows/Fonts/georgia.ttf",
+        42,
+        72,
+        12
+      ]
+    },
+    {
+      "id": 630,
+      "type": "MiniBookFrontMatter",
+      "pos": [
+        1782,
+        324
+      ],
+      "size": [
+        333,
+        342
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "editorial_plan",
+          "name": "editorial_plan",
+          "type": "STRING",
+          "link": 73
+        },
+        {
+          "localized_name": "raw_story",
+          "name": "raw_story",
+          "type": "STRING",
+          "link": 80
+        },
+        {
+          "localized_name": "context",
+          "name": "context",
+          "type": "LLM_CONTEXT",
+          "link": 75
+        },
+        {
+          "localized_name": "author_name",
+          "name": "author_name",
+          "type": "STRING",
+          "widget": {
+            "name": "author_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sheet_size",
+          "name": "sheet_size",
+          "type": "COMBO",
+          "widget": {
+            "name": "sheet_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "font",
+          "name": "font",
+          "type": "STRING",
+          "widget": {
+            "name": "font"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "include_dedication",
+          "name": "include_dedication",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "include_dedication"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "include_toc",
+          "name": "include_toc",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "include_toc"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "include_author_bio",
+          "name": "include_author_bio",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "include_author_bio"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "include_back_blurb",
+          "name": "include_back_blurb",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "include_back_blurb"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "front_pages",
+          "name": "front_pages",
+          "type": "IMAGE",
+          "links": [
+            77
+          ]
+        },
+        {
+          "localized_name": "back_pages",
+          "name": "back_pages",
+          "type": "IMAGE",
+          "links": [
+            78
+          ]
+        }
+      ],
+      "title": "Front Matter Generator",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MiniBookFrontMatter"
+      },
+      "widgets_values": [
+        "AJ Wells",
+        "US_Trade_6x9",
+        "C:/Windows/Fonts/georgia.ttf",
+        false,
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "id": 640,
+      "type": "MiniBookAssembler",
+      "pos": [
+        3726,
+        126
+      ],
+      "size": [
+        225,
+        126
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "body_pages",
+          "name": "body_pages",
+          "type": "IMAGE",
+          "link": 76
+        },
+        {
+          "localized_name": "front_pages",
+          "name": "front_pages",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 77
+        },
+        {
+          "localized_name": "back_pages",
+          "name": "back_pages",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 78
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "complete_book",
+          "name": "complete_book",
+          "type": "IMAGE",
+          "links": [
+            64
+          ]
+        }
+      ],
+      "title": "Book Assembler",
+      "properties": {
+        "aux_id": "FormAndNoise/ComfyUI-MiniBook_Node",
+        "ver": "b584686ace3629b06af2b9d9172ac3303aca1dcc",
+        "Node name for S&R": "MiniBookAssembler"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 500,
+      "type": "TextInput",
+      "pos": [
+        1044,
+        585
+      ],
+      "size": [
+        400,
+        300
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            79,
+            80
+          ]
+        }
+      ],
+      "title": "Raw Manuscript Input",
+      "properties": {
+        "Node name for S&R": "TextInput"
+      },
+      "widgets_values": [
+        " ",
+        "",
+        "",
+        "",
+        "Paste your raw manuscript text here...",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "links": [
+    [
+      40,
+      641,
+      0,
+      4,
+      0,
+      "STRING"
+    ],
+    [
+      41,
+      641,
+      1,
+      4,
+      1,
+      "STRING"
+    ],
+    [
+      42,
+      641,
+      3,
+      4,
+      2,
+      "STRING"
+    ],
+    [
+      43,
+      641,
+      2,
+      4,
+      3,
+      "STRING"
+    ],
+    [
+      44,
+      641,
+      4,
+      4,
+      4,
+      "STRING"
+    ],
+    [
+      47,
+      610,
+      0,
+      7,
+      1,
+      "STRING"
+    ],
+    [
+      48,
+      10,
+      1,
+      7,
+      0,
+      "CLIP"
+    ],
+    [
+      49,
+      10,
+      0,
+      9,
+      0,
+      "MODEL"
+    ],
+    [
+      50,
+      9,
+      0,
+      11,
+      0,
+      "MODEL"
+    ],
+    [
+      51,
+      9,
+      1,
+      11,
+      1,
+      "IPADAPTER"
+    ],
+    [
+      52,
+      8,
+      0,
+      11,
+      2,
+      "IMAGE"
+    ],
+    [
+      53,
+      22,
+      0,
+      11,
+      5,
+      "CLIP_VISION"
+    ],
+    [
+      54,
+      23,
+      0,
+      11,
+      6,
+      "INSIGHTFACE"
+    ],
+    [
+      55,
+      11,
+      0,
+      12,
+      0,
+      "MODEL"
+    ],
+    [
+      56,
+      7,
+      0,
+      12,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      57,
+      21,
+      0,
+      12,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      58,
+      13,
+      0,
+      12,
+      3,
+      "LATENT"
+    ],
+    [
+      59,
+      12,
+      0,
+      14,
+      0,
+      "LATENT"
+    ],
+    [
+      60,
+      10,
+      2,
+      14,
+      1,
+      "VAE"
+    ],
+    [
+      61,
+      101,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      62,
+      10,
+      1,
+      21,
+      0,
+      "CLIP"
+    ],
+    [
+      63,
+      16,
+      0,
+      100,
+      0,
+      "PDF"
+    ],
+    [
+      64,
+      640,
+      0,
+      101,
+      0,
+      "IMAGE"
+    ],
+    [
+      66,
+      50,
+      0,
+      600,
+      1,
+      "LLM_CONTEXT"
+    ],
+    [
+      67,
+      600,
+      0,
+      610,
+      0,
+      "STRING"
+    ],
+    [
+      68,
+      4,
+      1,
+      610,
+      1,
+      "STRING"
+    ],
+    [
+      69,
+      4,
+      2,
+      610,
+      2,
+      "STRING"
+    ],
+    [
+      70,
+      600,
+      1,
+      620,
+      0,
+      "STRING"
+    ],
+    [
+      71,
+      600,
+      2,
+      620,
+      1,
+      "STRING"
+    ],
+    [
+      72,
+      14,
+      0,
+      620,
+      2,
+      "IMAGE"
+    ],
+    [
+      73,
+      600,
+      0,
+      630,
+      0,
+      "STRING"
+    ],
+    [
+      75,
+      50,
+      0,
+      630,
+      2,
+      "LLM_CONTEXT"
+    ],
+    [
+      76,
+      620,
+      0,
+      640,
+      0,
+      "IMAGE"
+    ],
+    [
+      77,
+      630,
+      0,
+      640,
+      1,
+      "IMAGE"
+    ],
+    [
+      78,
+      630,
+      1,
+      640,
+      2,
+      "IMAGE"
+    ],
+    [
+      79,
+      500,
+      0,
+      600,
+      0,
+      "STRING"
+    ],
+    [
+      80,
+      500,
+      0,
+      630,
+      1,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.191817653772727,
+      "offset": [
+        442.0537243340786,
+        -2113.4536172639437
+      ]
+    }
+  },
+  "version": 0.4
+}

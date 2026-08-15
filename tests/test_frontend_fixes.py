@@ -230,6 +230,7 @@ def test_workflow_node_types_resolve():
         "LoadImage", "VAEDecode", "APIProviderSelectorNode",
         "FL_ImageListToImageBatch", "FL_ImagesToPDF", "FL_PDFSaver",
         "TextInput",  # registered by the external ComfyUI_Text_Processor pack
+        "MiniBookStoryInputs", "MiniBookLLMProvider",
     }
     with open(wf_path, encoding="utf-8") as f:
         wf = json.load(f)

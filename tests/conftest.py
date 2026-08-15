@@ -18,10 +18,14 @@ if "folder_paths" not in sys.modules:
     _stub.get_output_directory = lambda: os.path.join(ROOT, "output")
     sys.modules["folder_paths"] = _stub
 
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
 _spec = importlib.util.spec_from_file_location(
     "minibook_pack", os.path.join(ROOT, "__init__.py"),
     submodule_search_locations=[ROOT],
 )
 PACK = importlib.util.module_from_spec(_spec)
+PACK.__package__ = "minibook_pack"
 sys.modules["minibook_pack"] = PACK
 _spec.loader.exec_module(PACK)

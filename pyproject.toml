@@ -24,8 +24,8 @@ Icon = ""
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-# Load the folder_paths stub before collection triggers package imports
-addopts = "-p tests.conftest"
+python_files = ["test_*.py", "*_test.py"]
+addopts = "--ignore=__init__.py"
 
 [tool.flake8]
 max-line-length = 120
